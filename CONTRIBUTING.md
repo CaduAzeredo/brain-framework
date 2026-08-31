@@ -8,7 +8,7 @@ This guide defines the conventions any contribution must follow — from humans 
 
 - **The public framework is written in English**; an instance keeps its own content in whatever language its team works in. The boundary is the export allowlist, file by file: whatever `scripts/export-manifest.json` exports is product and is written in English.
 - **In this release**, `skills/` and `templates/` are still in Brazilian Portuguese while their translation lands; new files added to the allowlist are written in English from the start.
-- Structural names — folders, files, frontmatter fields, slugs — are **English** on both sides.
+- Structural names — folders, files, frontmatter fields, slugs — are **English** on both sides. Two exceptions still ship and are part of the same translation pass: the frontmatter field names (`tipo`, `projeto`, `data`, `autor`) and the `templates/projeto/` folder. New structural names are English from the start, without exception.
 - Links between documents are always **relative** — never absolute machine paths.
 - Project slugs are canonical and live in `governance/registro-projetos.yaml`; never invent variations.
 

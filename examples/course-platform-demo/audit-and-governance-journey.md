@@ -35,7 +35,7 @@ You can read the real artifacts of this demo, in order: [spec-002](specs/spec-00
 
 ## The differentiator: adversarial verification
 
-The Brain does not trust its first finding. Every candidate defect is re-verified by reading the real code, with a `file:line` reference, and receives an explicit verdict — **Confirmed**, **Partial** or **Refuted**. A finding that fails to reconfirm is downgraded in writing, never quietly dropped. In Lumina's journey two "obvious" hypotheses fell through that sieve: a component that looked live turned out to be orphan code with no importer, and a route flagged as unprotected proved to be correctly authenticated all along. Reporting what is **not** a problem is as valuable as reporting what is.
+The Brain does not trust its first finding. Every candidate defect is re-verified by reading the real code, with a `file:line` reference, and receives an explicit verdict — **Confirmed**, **Partial** or **Refuted**. A finding that fails to reconfirm is downgraded in writing, never quietly dropped. In Lumina's journey two "obvious" hypotheses fell through that sieve: the certificate PDF was reported as being generated twice per enrolment, and re-reading the job showed a single write with a retried upload; and a quiz score was reported as rounding against the student, which turned out to be correct and merely displayed without its decimal. Reporting what is **not** a problem is as valuable as reporting what is.
 
 ## What the method looks for
 

@@ -29,7 +29,7 @@ If you would rather start without history, copy the files and run `git init` in 
 bun scripts/new-project.mjs <slug>
 ```
 
-Use a short kebab-case slug (for example `my-app`). The script creates `projects/<slug>/` with `CONTEXT.md` (from the template), `handoffs/` and `tickets/`.
+Use a short kebab-case slug (for example `my-app`). The script creates `projects/<slug>/` with `CONTEXT.md` and `DOMAIN.md` (from the templates), plus `specs/`, `tickets/` and `handoffs/`.
 
 ## 4. Fill in the context with the pipeline
 

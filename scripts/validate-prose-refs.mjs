@@ -55,11 +55,16 @@ const declaradas = [];
 const rel = (abs) => path.relative(RAIZ, abs) || ".";
 
 const IGNORAR_TOP = new Set(["archive", "dist", ".git", "node_modules"]);
-const PASTAS_LEGADAS = new Set([
-  "00-governanca", "01-ambiente-local", "02-projetos", "03-operacao-agentes",
-  "04-guia-real", "05-evidencias", "06-pesquisa-orca", "07-empresa-e-metricas",
-  "99-arquivo", "claude-max",
-]);
+// Ver a nota em validate-structure.mjs: a arvore legada e de cada instancia,
+// nao do framework. Ausente = zero legado.
+const PASTAS_LEGADAS = new Set((() => {
+  const arq = path.join(RAIZ, "governance", "legacy-tree.json");
+  if (!fs.existsSync(arq)) return [];
+  try {
+    const j = JSON.parse(fs.readFileSync(arq, "utf8"));
+    return Array.isArray(j.folders) ? j.folders : [];
+  } catch { return []; }
+})());
 
 // Só extensões que pertencem ao repositório. Citar `package.json` ou
 // `tsconfig.json` de um projeto externo não é referência quebrada daqui.

@@ -74,7 +74,16 @@ const PASTAS_NOVAS = [
   "skills", "projects", "examples", "agents", "templates", "governance",
   "docs", "metrics", "references",
 ];
-const ARQUIVOS_LEGADOS_RAIZ = new Set(["BACKLOG-MESTRE.md", "DECISOES.md"]);
+// Arquivos de raiz da arvore legada DESTA instancia (ver validate-structure.mjs).
+// Ausente = zero legado, que e o estado de um repositorio novo.
+const ARQUIVOS_LEGADOS_RAIZ = new Set((() => {
+  const arq = path.join(RAIZ, "governance", "legacy-tree.json");
+  if (!fs.existsSync(arq)) return [];
+  try {
+    const j = JSON.parse(fs.readFileSync(arq, "utf8"));
+    return Array.isArray(j.root_files) ? j.root_files : [];
+  } catch { return []; }
+})());
 
 const CABECALHO_GERADO = "<!-- GERADO por scripts/build-index.mjs — não editar à mão -->";
 const HOJE = hojeIso();

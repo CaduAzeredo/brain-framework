@@ -51,12 +51,32 @@ const rel = (abs) => path.relative(RAIZ, abs) || ".";
 
 // --- conjuntos canônicos (ADR-016 / ADR-018) --------------------------------
 
-const PASTAS_LEGADAS = new Set([
-  "00-governanca", "01-ambiente-local", "02-projetos", "03-operacao-agentes",
-  "04-guia-real", "05-evidencias", "06-pesquisa-orca", "07-empresa-e-metricas",
-  "99-arquivo", "claude-max",
-]);
-const ARQUIVOS_LEGADOS_RAIZ = new Set(["BACKLOG-MESTRE.md", "DECISOES.md"]);
+// Arvore legada da instancia: pastas e arquivos de raiz que existiam antes da
+// estrutura atual e que continuam tolerados enquanto a migracao nao termina.
+//
+// A lista NAO e do framework — e de cada instancia. Antes ela vinha fixa no
+// codigo com os dez nomes da migracao de quem escreveu o framework, e quem
+// clonava herdava a arqueologia de outra pessoa: um validador que tolera pastas
+// que nao existem no mundo dele, e que anuncia a historia de um repositorio
+// alheio. Ausente = zero legado, que e o estado certo de um repositorio novo.
+function lerArvoreLegada() {
+  const arq = path.join(RAIZ, "governance", "legacy-tree.json");
+  if (!fs.existsSync(arq)) return { pastas: [], arquivosRaiz: [] };
+  try {
+    const j = JSON.parse(fs.readFileSync(arq, "utf8"));
+    return {
+      pastas: Array.isArray(j.folders) ? j.folders : [],
+      arquivosRaiz: Array.isArray(j.root_files) ? j.root_files : [],
+    };
+  } catch (e) {
+    erro(`governance/legacy-tree.json — falha ao ler ou interpretar: ${e.message}`);
+    return { pastas: [], arquivosRaiz: [] };
+  }
+}
+
+const LEGADO = lerArvoreLegada();
+const PASTAS_LEGADAS = new Set(LEGADO.pastas);
+const ARQUIVOS_LEGADOS_RAIZ = new Set(LEGADO.arquivosRaiz);
 
 const PERMITIDOS_RAIZ = new Set([
   // arquivos canônicos
