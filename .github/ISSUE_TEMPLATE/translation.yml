@@ -1,0 +1,66 @@
+name: Translation
+description: Claim a file or folder to translate — this is the issue the README points at.
+title: "translation: "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Context.** The public surface is written in English as of v0.2.0, the first public release: the README, the quickstart, the agent contract, the contributing guide and the worked example. `skills/` and `templates/` are **not** — they are still in Brazilian Portuguese, and so are the frontmatter field names and their enum values. That was a deliberate release decision, declared in the README rather than hidden: the machinery shipped instead of waiting on a translation pass.
+
+        Translating `skills/` and `templates/` into English is the headline item of **the next minor release**. This form is where that work gets claimed, file by file, so two people do not translate the same skill twice.
+
+        Localisations into languages other than English are welcome too — say so below and the issue is triaged separately from that work.
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Which file or folder
+      description: One path per line, relative to the repository root. Claim what you can actually finish — a single skill folder is a perfectly good unit of work, and small pull requests get reviewed faster than large ones.
+      placeholder: |
+        skills/core-pipeline/to-spec/SKILL.md
+        templates/adr.md
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target-language
+    attributes:
+      label: Target language
+      options:
+        - English — translating the Brazilian Portuguese that still ships, the headline work of the next release
+        - Another language — a new localisation
+    validations:
+      required: true
+
+  - type: input
+    id: language-name
+    attributes:
+      label: Which language, if not English
+      description: Leave blank when the target is English. Otherwise name the language and the regional variant you are writing, if the distinction matters.
+      placeholder: Spanish (es-ES)
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes and open questions
+      description: Optional — terms you are unsure how to render, a passage where the original reads ambiguously, or a translation choice you want agreed before you start.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: structural-names
+    attributes:
+      label: What does not get translated
+      description: Read this before claiming anything — it is the most common way a translation pull request has to be sent back.
+      options:
+        - label: >-
+            I understand that structural names stay in English on both sides and are not translated: folder names, file names, slugs, skill names and pipeline stage names. Prose is translated; identifiers are not.
+          required: true
+        - label: >-
+            I understand that the frontmatter field names — `id`, `tipo`, `projeto`, `status`, `data`, `autor` — and their enum values are a data contract, not prose. They stay exactly as written, in Portuguese, so that documents remain machine-readable across every instance regardless of the language the prose is in. Renaming them is a separate decision that would need its own ADR, and it is not part of this issue.
+          required: true

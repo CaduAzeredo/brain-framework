@@ -1,0 +1,67 @@
+{
+  "_comment": "Allowlist do export publico (ADR-017). Privado por padrao: NADA sai a nao ser o que esta listado em 'allowlist'. Adicionar uma entrada aqui e um ato deliberado de publicacao — trate cada uma como decisao, nao como conveniencia. A lista de pastas que jamais podem entrar e nota privada do operador e vive em governance/, nao neste arquivo, que e exportado.",
+  "allowlist": [
+    "LICENSE",
+    "NOTICE",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "QUICKSTART.md",
+    {
+      "from": "README-PUBLICO.md",
+      "to": "README.md"
+    },
+    {
+      "from": "AGENTS-PUBLICO.md",
+      "to": "AGENTS.md"
+    },
+    {
+      "from": "governance/registro-projetos.seed.yaml",
+      "to": "governance/registro-projetos.yaml"
+    },
+    "skills/**",
+    "templates/**",
+    "scripts/**",
+    "examples/course-platform-demo/**",
+    "references/README.md",
+    {
+      "from": "governance/public-package/SECURITY.md",
+      "to": "SECURITY.md"
+    },
+    {
+      "from": "governance/public-package/CODE_OF_CONDUCT.md",
+      "to": "CODE_OF_CONDUCT.md"
+    },
+    {
+      "from": "governance/public-package/gitignore",
+      "to": ".gitignore"
+    },
+    {
+      "from": "governance/public-package/gitattributes",
+      "to": ".gitattributes"
+    },
+    {
+      "from": "governance/public-package/github/workflows/ci.yml",
+      "to": ".github/workflows/ci.yml"
+    },
+    {
+      "from": "governance/public-package/github/pull-request-template.md",
+      "to": ".github/PULL_REQUEST_TEMPLATE.md"
+    },
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/skill_proposal.yml",
+    ".github/ISSUE_TEMPLATE/translation.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    "docs/assets/pipeline.svg"
+  ],
+  "strip_frontmatter": [
+    "README.md",
+    "AGENTS.md",
+    "QUICKSTART.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md"
+  ],
+  "_nota_frontmatter": "Destinos listados em strip_frontmatter perdem o bloco de frontmatter na copia: sao os arquivos de vitrine do repositorio publico, e o GitHub renderiza frontmatter YAML de .md como tabela no topo da pagina. skills/, templates/ e o exemplo MANTEM o frontmatter — ali ele e o produto, nao ruido. A varredura de redacao do dry-run le o conteudo antes da poda, o que e mais estrito que o publicado, nunca menos.",
+  "_nota_github": "ATENCAO: .github/ da instancia contem TAMBEM o workflow privado .github/workflows/ci.yml, que roda o doctor e o tripwire de inventario e NUNCA pode ir a publico. Por isso os arquivos de .github entram na allowlist UM A UM. Nunca trocar por '.github/**' — o glob levaria o workflow privado junto.",
+  "redaction_patterns_file": "governance/seguranca/redaction-patterns.json",
+  "_nota_redacao": "Os padroes de redacao NAO moram mais aqui. Este manifest e exportado (scripts/** esta na allowlist), e a lista de padroes contem slugs de cliente e fragmentos da identidade do operador — publicar a lista seria publicar o que ela esconde. Ela vive em governance/seguranca/redaction-patterns.json, que nunca e exportado. O modelo generico para quem clona o framework e scripts/redaction-patterns.example.json."
+}

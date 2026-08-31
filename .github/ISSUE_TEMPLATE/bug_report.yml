@@ -1,0 +1,92 @@
+name: Bug report
+description: Something in the framework does not behave the way it is documented — a script, a validation, a template or a skill.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        One thing worth knowing before you write: the framework has **zero dependencies**. There is no `package.json` and no install step — the scripts run on Bun or on Node.js 20+ using builtins only. `bun install` and `npm install` having nothing to do is expected behaviour, not a bug.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: The actual behaviour, in your own words. One paragraph is plenty.
+      placeholder: The structure validator reports a missing frontmatter field on a document where that field is present.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-you-expected
+    attributes:
+      label: What you expected
+      description: The behaviour the documentation led you to expect. If you can point at the line that promised it — in the README, the quickstart, the agent contract or a skill — say where.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps, starting from a fresh clone wherever you can. A report that reproduces on a clean checkout is fixed in a fraction of the time.
+      value: |
+        1. `git clone https://github.com/CaduAzeredo/brain-framework.git && cd brain-framework`
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: check-output
+    attributes:
+      label: Output of the check command
+      description: Paste the output of `bun scripts/doctor.mjs` — or `node scripts/doctor.mjs`. It runs every checker in one command, so its output usually locates the fault on its own. Read the redaction note at the bottom of this form before you paste.
+      render: shell
+    validations:
+      required: true
+
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Which JavaScript runtime executed the scripts.
+      options:
+        - Bun
+        - Node 20
+        - Node 22
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+
+  - type: textarea
+    id: anything-else
+    attributes:
+      label: Anything else
+      description: Optional — a workaround you found, a related issue, the commit or release you are on.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: redaction-check
+    attributes:
+      label: Redaction check
+      description: This one is not a formality. Please actually re-read what you pasted.
+      options:
+        - label: >-
+            I have re-read the output I pasted above and it contains no secrets — no tokens, keys, credentials or URLs with credentials in them — and no private paths, machine names or client names. Anything of that sort has been replaced with a placeholder. This box exists because a GitHub issue is public and permanent, while validator output quotes real absolute paths and real file contents from the machine it ran on. The framework's own first rule is that secrets never enter a log, a document or a commit; an issue is no different.
+          required: true

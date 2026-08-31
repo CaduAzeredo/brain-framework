@@ -1,0 +1,55 @@
+{
+  "_comment": "Template de handoff machine-readable. Companheiro do handoff.md de mesmo handoff_id — o .md carrega a narrativa para humanos, o .json o estado para máquinas. Substitua os valores <placeholder>. Salvar como projects/<slug>/handoffs/handoff-<data>-<titulo>.json",
+  "handoff_id": "<handoff-slug-data, ex.: handoff-meuprojeto-2026-01-15-rodada-1>",
+  "schema_version": "1.0",
+  "project": "<slug canônico registrado em governance/registro-projetos.yaml>",
+  "created_at": "<ISO 8601, ex.: 2026-08-27T18:00:00-03:00>",
+  "from_agent": "<agente-de-origem ou operador>",
+  "to_agent": "<agente-de-destino ou operador>",
+  "session_metrics": {
+    "duration_minutes": 0,
+    "files_touched": 0,
+    "commits": 0,
+    "tests_passing": "<n/n ou n/a>"
+  },
+  "git_state": {
+    "repo": "<caminho do repositório>",
+    "branch": "<branch ativa>",
+    "head": "<hash curto do HEAD>",
+    "dirty": false,
+    "untracked": [],
+    "ahead_behind_remote": "<ex.: +2/-0 ou n/a>"
+  },
+  "active_task": {
+    "spec": "<caminho relativo da spec ou null>",
+    "ticket": "<caminho relativo do ticket ou null>",
+    "description": "<a tarefa em uma frase>",
+    "progress": "<ex.: bloco B concluído; aguardando PARADA 2>"
+  },
+  "execution_invariants": [
+    "<regra que DEVE permanecer verdadeira durante toda a execução, ex.: nenhum arquivo de governance/ é editado>",
+    "<ex.: nenhuma memória de agente é confirmada sem aprovação humana>"
+  ],
+  "blockers": [
+    {
+      "id": "<blocker-1>",
+      "description": "<o que bloqueia>",
+      "owner": "<quem destrava: operador|agente>",
+      "risk_tier": "<T1|T2|T3|T4>"
+    }
+  ],
+  "paradas": [
+    {
+      "id": "<PARADA-1>",
+      "what_to_approve": "<decisão exata que o humano aprova>",
+      "evidence_required": "<evidência a apresentar antes da aprovação>"
+    }
+  ],
+  "immediate_next_step": {
+    "action": "<a única próxima ação inequívoca>",
+    "command": "<comando literal, se houver, ou null>",
+    "expected_result": "<como saber que deu certo>",
+    "risk_tier": "<T1|T2|T3|T4>"
+  },
+  "validation_criteria_ref": "<caminho relativo do handoff-<...>.md, seção de critérios numerados>"
+}

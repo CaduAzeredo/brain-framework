@@ -1,0 +1,24 @@
+# Dependencies and build output.
+# The framework itself has zero dependencies — these entries exist so that a project
+# built on top of it never commits its own install or build artifacts by accident.
+node_modules/
+dist/
+
+# Secrets — never versioned, under any name.
+.env
+.env.*
+*.pem
+*.key
+.credentials*
+
+# Raw external material, before triage.
+# This entry is load-bearing, not housekeeping: scripts/validate-structure.mjs downgrades a
+# suspected secret under archive/inbox/ from a fatal error to a warning, and it may only do
+# that because the folder is ignored here. Remove this line and an untriaged chat export
+# carrying a token becomes committable with the checks still green.
+archive/inbox/
+
+# Operating system clutter.
+Thumbs.db
+desktop.ini
+.DS_Store

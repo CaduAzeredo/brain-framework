@@ -1,0 +1,73 @@
+name: Skill proposal
+description: Propose a new skill for the pipeline — what triggers it, what it produces and how anyone can tell it worked.
+title: "skill: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A skill is a folder containing a `SKILL.md` whose frontmatter opens with `name` and `description`, following the **Agent Skills** format — that opening pair is what lets an agent discover the skill and load it on demand, so it carries most of the weight of a proposal. In this framework the same frontmatter block then continues with the six governance fields, and the skill is a governed document like any other. See `CONTRIBUTING.md`, section 7.
+
+        You do not need working files to open this issue. A proposal that answers the five questions below is enough to discuss.
+
+  - type: input
+    id: skill-name
+    attributes:
+      label: Skill name
+      description: kebab-case, lowercase, no spaces — this becomes the folder name and the `name` field of the frontmatter. Name the job, not the tool.
+      placeholder: threat-modeling
+    validations:
+      required: true
+
+  - type: textarea
+    id: trigger
+    attributes:
+      label: Trigger — when should an agent load this skill?
+      description: The situation that should pull the skill in, written the way an agent would recognise it. This is the raw material for the `description` field, so be concrete about the moment rather than the topic.
+      placeholder: When a spec introduces an authentication boundary or handles payment data, before implementation starts.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: pipeline-position
+    attributes:
+      label: Where it sits in the pipeline
+      description: Which existing stage it belongs to, or whether it is a stage of its own.
+      options:
+        - grill-with-docs
+        - domain-modeling
+        - to-spec
+        - implement
+        - handoff
+        - ops
+        - meta
+        - A new stage
+    validations:
+      required: true
+
+  - type: textarea
+    id: artifact
+    attributes:
+      label: The artifact it produces
+      description: What exists on disk after the skill runs that did not exist before — the file, where it lands, and whether it needs a template of its own in `templates/`. A skill that produces no artifact is usually a rule for the agent contract instead.
+      placeholder: A threat model section appended to the project's DOMAIN.md, plus one ticket per accepted mitigation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: success-criterion
+    attributes:
+      label: How you know it worked — a verifiable criterion
+      description: Something a person or a script can check and get the same answer twice. "The output is better" is not checkable; "every trust boundary in the spec has a named mitigation or an explicit accepted-risk line" is.
+      placeholder: Running the skill on the worked example produces a section where each trust boundary carries either a mitigation ticket or a written accepted-risk note — and the validator passes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: prior-art
+    attributes:
+      label: Anything else
+      description: Optional — an existing skill this overlaps with, why it should not simply extend that one, or a link to prior art.
+    validations:
+      required: false

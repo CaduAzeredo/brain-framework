@@ -1,0 +1,16 @@
+{
+  "_comment": "Example redaction patterns for the public export. Copy this file to governance/seguranca/redaction-patterns.json and replace the values with your own: your email, your machine name, your client slugs, the paths of your working directories. The export refuses to run without that file, and it never exports it.",
+  "_note_on_escapes": "scripts/** is exported, so this very file is scanned. That is why a pattern must not contain its own target as a literal: use equivalent escapes (\\u005Cx2D for a hyphen, \\u005Cx5F for an underscore) or a one-character class such as [o]. The regex still matches the real string; the pattern text does not match itself.",
+  "patterns": [
+    "y[o]ur\\x2Dmachine\\x2Dname",
+    "[a-z0-9._%+\\x2D]+@[a-z0-9\\x2D]+\\.[a-z]{2,}",
+    "C:\\\\Users",
+    "sk\\x2Dant\\x2D",
+    "gh[p]\\x5F",
+    "github\\x5Fpa[t]\\x5F",
+    "AKI[A]",
+    "xox[b]\\x2D",
+    "-----BEG[I]N[^\\n]*PRIV[A]TE KEY",
+    "Beare[r] [A-Za-z0-9\\-._~+/=]{20,}"
+  ]
+}

@@ -1,0 +1,54 @@
+# Brain Framework — public repository checks.
+# Zero dependencies: nothing is installed, the validators run on runtime builtins alone.
+# Deliberately excluded: doctor.mjs and export-public.mjs — the export allowlist references files
+# that exist only in the private instance, so neither step belongs in this workflow.
+
+name: checks
+
+on:
+  push:
+  pull_request:
+
+# The checks only read the tree. Pinning this here means the workflow keeps a read-only
+# token even in a repository whose default is read-and-write.
+permissions:
+  contents: read
+
+jobs:
+  node:
+    name: validators on Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["20", "22"]
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Validate structure and frontmatter
+        run: node scripts/validate-structure.mjs
+
+      - name: Validate relative links
+        run: node scripts/validate-links.mjs
+
+  bun:
+    name: validators on Bun
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Validate structure and frontmatter
+        run: bun scripts/validate-structure.mjs
+
+      - name: Validate relative links
+        run: bun scripts/validate-links.mjs

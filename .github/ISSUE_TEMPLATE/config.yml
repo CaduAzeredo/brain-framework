@@ -1,0 +1,19 @@
+# Nota de operacao: os dois destinos abaixo sao recursos OPT-IN do GitHub e nao
+# existem num repositorio recem-criado. Private Vulnerability Reporting precisa
+# ser ligado em Settings > Security, e Discussions em Settings > General. Ligue os
+# dois ANTES de tornar o repositorio publico — senao os dois links dao 404 no dia
+# um, e um deles e a via que SECURITY.md e CODE_OF_CONDUCT.md nomeiam como o
+# canal privado de reporte.
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/CaduAzeredo/brain-framework/security/advisories/new
+    about: >-
+      Do not open a public issue for a vulnerability. Use GitHub Private Vulnerability Reporting — the
+      "Security" tab of this repository, then "Report a vulnerability" — so the report stays private
+      until a fix ships. See SECURITY.md for what is in scope and what to expect.
+  - name: Question, idea or show and tell
+    url: https://github.com/CaduAzeredo/brain-framework/discussions
+    about: >-
+      Questions about how to use the framework, ideas that are not yet a concrete proposal, and
+      instances you have built with it belong in Discussions rather than the issue tracker.

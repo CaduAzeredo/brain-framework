@@ -1,0 +1,61 @@
+{
+  "_comment": "Example only — adapt to your own project. The 'Lumina' product is entirely fictional. Machine-readable companion of handoff-lumina-round-2.md, same handoff_id (ADR-020): the .md carries the narrative for humans, the .json the state for machines.",
+  "handoff_id": "handoff-lumina-2026-08-27-round-2",
+  "schema_version": "1.0",
+  "project": "lumina-demo",
+  "created_at": "2026-08-27T16:30:00-03:00",
+  "from_agent": "executor",
+  "to_agent": "operator",
+  "session_metrics": {
+    "duration_minutes": 420,
+    "files_touched": 11,
+    "commits": 6,
+    "tests_passing": "48/48"
+  },
+  "git_state": {
+    "repo": "<your-projects-folder>/lumina",
+    "branch": "main",
+    "head": "a1b2c3d",
+    "dirty": false,
+    "untracked": [],
+    "ahead_behind_remote": "+6/-0"
+  },
+  "active_task": {
+    "spec": "examples/course-platform-demo/specs/spec-002-certificate-issuance.md",
+    "ticket": "examples/course-platform-demo/tickets/ticket-001-certificate-issuance.md",
+    "description": "Certificate issuance implemented end to end; round 3 opens the instructor completion dashboard.",
+    "progress": "spec-002 complete, all six acceptance criteria passing; awaiting PARADA 1 on metrics strategy"
+  },
+  "execution_invariants": [
+    "No code path updates a certificate after creation (domain invariant 3)",
+    "The completion check stays at exactly one counting query on the hot path",
+    "Every new document carries valid v2 frontmatter before the round is considered closed"
+  ],
+  "blockers": [
+    {
+      "id": "blocker-1",
+      "description": "Certificate supersession semantics undecided: does the original URL keep serving the old document or redirect to the new one",
+      "owner": "operador",
+      "risk_tier": "T1"
+    }
+  ],
+  "paradas": [
+    {
+      "id": "PARADA-1",
+      "what_to_approve": "Completion metrics computed on read versus incrementally maintained",
+      "evidence_required": "Drafted spec-004 plus a measured read-time figure for the computed-on-read option against the demo dataset"
+    },
+    {
+      "id": "PARADA-2",
+      "what_to_approve": "Whether a superseded certificate's original URL serves the old document or redirects",
+      "evidence_required": "None beyond the question — it is a product decision, and framing it as technical would mislead"
+    }
+  ],
+  "immediate_next_step": {
+    "action": "Write spec-004 for instructor completion metrics using the to-spec skill",
+    "command": null,
+    "expected_result": "A spec whose every acceptance criterion names how it is verified",
+    "risk_tier": "T1"
+  },
+  "validation_criteria_ref": "handoff-lumina-round-2.md, section 'Validation criteria'"
+}

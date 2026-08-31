@@ -1,0 +1,19 @@
+# The source repository is authored on Windows and the framework is meant to run anywhere.
+# Normalising line endings on commit keeps the diff clean across platforms, so a file edited
+# on Windows and reviewed on Linux shows the change and not the whole file.
+* text=auto
+
+# Images — binary, never normalised and never diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+
+# Compressed archives — binary.
+*.zip binary
+*.gz binary
+*.tar binary
+*.7z binary
