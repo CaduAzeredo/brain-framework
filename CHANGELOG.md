@@ -6,6 +6,17 @@ Version history of the Brain Framework. Format: [Keep a Changelog](https://keepa
 
 Nothing yet.
 
+## [0.2.1] - 2026-08-31
+
+Follow-up to the adversarial pre-publication audit. Seven findings survived refutation and are closed here; none of them affect how the framework runs.
+
+### Fixed
+
+- **The worked example carried two illustrations that traced back to a real client engagement.** They described refuted hypotheses — findings that turned out not to be defects — but the wording was still a translation of someone else's audit. They are now genuinely Lumina's, inside the scope that example declares.
+- **CONTRIBUTING claimed structural names are English on both sides.** The frontmatter field names (`tipo`, `projeto`, `data`, `autor`) and the `templates/projeto/` folder are not, and they ship. The rule was written as though it had already been met; it now says what is true and what is still pending.
+- **The quickstart understated what the scaffolder creates**, omitting `DOMAIN.md` and `specs/` — the two artifacts the next step tells you to fill in.
+- **Three validators hardcoded ten legacy folder names** from the private instance this framework was extracted from, so a fresh clone inherited someone else's migration archaeology and tolerated folders that do not exist in it. The list now comes from an optional `governance/legacy-tree.json`; absent means no legacy, which is the right state for a new repository.
+
 ## [0.2.0] - 2026-08-31
 
 **First public release.** Version 0.1.0 above was a pre-publication milestone, cut before this repository existed in the open; this is the first version anyone outside the project can download.
