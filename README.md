@@ -10,8 +10,11 @@ Give a coding agent trustworthy context, a named skill pipeline and verifiable w
 [![Checks](https://github.com/CaduAzeredo/brain-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/CaduAzeredo/brain-framework/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/CaduAzeredo/brain-framework?display_name=tag&sort=semver)](https://github.com/CaduAzeredo/brain-framework/releases/latest)
 [![Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen.svg)](#quickstart)
+[![Website](https://img.shields.io/badge/site-caduazeredo.com-3fa372.svg)](https://www.caduazeredo.com/)
 
 ![The Brain pipeline: grill-with-docs, domain-modeling, to-spec, implement, handoff, with human stops and automated validation](docs/assets/pipeline.svg)
+
+**[caduazeredo.com](https://www.caduazeredo.com/)** · [Quickstart](QUICKSTART.md) · [Discussions](https://github.com/CaduAzeredo/brain-framework/discussions)
 
 </div>
 
@@ -130,7 +133,7 @@ Skills follow the **Agent Skills** format: each skill is a folder containing a `
 
 The framework is free under Apache 2.0 and stays that way. Fork it, run it inside a company, build a product on it — the licence already grants that, and nothing here is gated.
 
-If you want the method applied rather than adopted — a technical audit, a governed dossier, or help standing the pipeline up on your codebase — that is a conversation, not a checkout page. Open a [discussion](https://github.com/CaduAzeredo/brain-framework/discussions) or reach the author through the link in [NOTICE](NOTICE). There is no published price list: pricing that nobody has validated is a hypothesis, and this project does not publish hypotheses as facts.
+If you want the method applied rather than adopted — a technical audit, a governed dossier, or help standing the pipeline up on your codebase — that is a conversation, not a checkout page. Start at **[caduazeredo.com](https://www.caduazeredo.com/)**, where each engagement is written out with its scope, or open a [discussion](https://github.com/CaduAzeredo/brain-framework/discussions). The author's contact is also in [NOTICE](NOTICE). There is no published price list: pricing that nobody has validated is a hypothesis, and this project does not publish hypotheses as facts.
 
 ## Trademark and naming
 
