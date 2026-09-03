@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="100%"
      preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="bf-title bf-desc">
-  <title id="bf-title">The Brain Framework skill pipeline</title>
+  <title id="bf-title">The Shizune skill pipeline</title>
   <desc id="bf-desc">Five skills run left to right. grill-with-docs produces CONTEXT.md; domain-modeling produces DOMAIN.md; to-spec produces a spec with acceptance criteria; implement produces a ticket and code; handoff produces handoff.md and handoff.json. Two human stops gate the flow: one before implement and one after handoff. A band running beneath every stage marks the automated validation of structure, links, frontmatter and secrets.</desc>
 
   <defs>

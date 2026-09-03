@@ -1,7 +1,7 @@
 ---
-name: brain-rodada
-description: How to plan and conduct an execution Rodada (round) in the Brain — blocks, mandatory human stops (PARADAs), pre-defined numbered validation criteria and blocking gates, and an immutable final report. Use when planning multi-step execution that touches governed state, writing a handoff for an executor agent, or defining done-criteria for a round. Triggers: "planejar rodada", "criar handoff", "executar rodada", "definir critérios de validação", "plan a round", "execution round".
-id: skill-brain-rodada
+name: shizune-rodada
+description: How to plan and conduct an execution Rodada (round) in Shizune — blocks, mandatory human stops (PARADAs), pre-defined numbered validation criteria and blocking gates, and an immutable final report. Use when planning multi-step execution that touches governed state, writing a handoff for an executor agent, or defining done-criteria for a round. Triggers: "planejar rodada", "criar handoff", "executar rodada", "definir critérios de validação", "plan a round", "execution round".
+id: skill-shizune-rodada
 tipo: skill
 projeto: global
 status: vigente
@@ -9,9 +9,9 @@ data: 2026-08-27
 autor: brain-framework
 ---
 
-# Brain Rodada
+# Shizune Rodada
 
-Esta skill define como estruturar e conduzir uma Rodada de execução no Brain: blocos ordenados por risco, PARADAs humanas obrigatórias antes de toda ação irreversível, critérios de validação numerados definidos antes de executar e relatório final imutável. O padrão foi extraído de uma rodada real de operação (a "Rodada 0") e generalizado.
+Esta skill define como estruturar e conduzir uma Rodada de execução no Shizune: blocos ordenados por risco, PARADAs humanas obrigatórias antes de toda ação irreversível, critérios de validação numerados definidos antes de executar e relatório final imutável. O padrão foi extraído de uma rodada real de operação (a "Rodada 0") e generalizado.
 
 ## Propósito
 
@@ -69,7 +69,7 @@ O handoff lista: as entregas exatas ("N entregas, nada além"), as consequência
 
 ### 7. Feche com relatório final imutável
 
-Ao término, o relatório da rodada é gravado em `logs/<ano>/<slug>/` (relativo à raiz do Brain) — registro imutável: estado final verificado, critérios com resultado real, desvios e pendências. Nunca é editado depois; correção posterior é documento novo que o referencia. Documentos vivos afetados (status, mapas) são atualizados à parte, apontando para o relatório.
+Ao término, o relatório da rodada é gravado em `logs/<ano>/<slug>/` (relativo à raiz do Shizune) — registro imutável: estado final verificado, critérios com resultado real, desvios e pendências. Nunca é editado depois; correção posterior é documento novo que o referencia. Documentos vivos afetados (status, mapas) são atualizados à parte, apontando para o relatório.
 
 ## Saída
 

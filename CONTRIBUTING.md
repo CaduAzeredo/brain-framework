@@ -1,6 +1,6 @@
-# CONTRIBUTING — How to contribute to the Brain Framework
+# CONTRIBUTING — How to contribute to Shizune
 
-This guide defines the conventions any contribution must follow — from humans or agents — in a Brain Framework instance: commits, ADRs, frontmatter, archiving, security and licence.
+This guide defines the conventions any contribution must follow — from humans or agents — in a Shizune instance: commits, ADRs, frontmatter, archiving, security and licence.
 
 ---
 
@@ -32,9 +32,9 @@ fix(scripts): correct frontmatter validation for SKILL.md files
 - **Nygard** format: Context → Decision → Consequences, with Status and Date in the header.
 - **Numbering**: highest existing number plus one. **Never renumber** an ADR, even a rejected one.
 - **Supersede by status mark**: an ADR is never deleted, and never edited to "fix" the decision — a new ADR supersedes it and the old one receives the status mark (for example, `Superseded by ADR-021`).
-- **Cross-project prefixes**: ADRs local to a project use a slug prefix (for example `ProjectA/ADR-001`) so they do not collide with the Brain's global numbering.
+- **Cross-project prefixes**: ADRs local to a project use a slug prefix (for example `ProjectA/ADR-001`) so they do not collide with Shizune's global numbering.
 - Your instance's ADRs live under `governance/adr/`, numbered sequentially and never renumbered.
-- **The framework ships no ADRs of its own.** Skills, templates and script comments cite ADR numbers (ADR-007, ADR-015, ADR-018 and others): those are decision records of the instance this framework was extracted from, and they are not published — they carry that instance's private context. What ships is the mechanism: `templates/adr.md` and the `brain-adr` skill. Read a cited number as "there is a recorded reason for this rule", not as a document you are expected to open. Your instance starts its own numbering at 001.
+- **The framework ships no ADRs of its own.** Skills, templates and script comments cite ADR numbers (ADR-007, ADR-015, ADR-018 and others): those are decision records of the instance this framework was extracted from, and they are not published — they carry that instance's private context. What ships is the mechanism: `templates/adr.md` and the `shizune-adr` skill. Read a cited number as "there is a recorded reason for this rule", not as a document you are expected to open. Your instance starts its own numbering at 001.
 
 ## 4. Frontmatter v2 is mandatory
 
@@ -83,4 +83,4 @@ It runs every checker at once. The structure checker verifies frontmatter, field
 
 ## 8. Licence
 
-The Brain Framework is distributed under the **Apache License 2.0** ("Brain Framework © 2026 Cadu Azeredo" — see `LICENSE` and `NOTICE` at the root). Every contribution is accepted under the same licence (**inbound = outbound**): by contributing, you agree to license your contribution under Apache 2.0, with no additional terms.
+Shizune is distributed under the **Apache License 2.0** ("Shizune © 2026 Cadu Azeredo" — see `LICENSE` and `NOTICE` at the root). Every contribution is accepted under the same licence (**inbound = outbound**): by contributing, you agree to license your contribution under Apache 2.0, with no additional terms.

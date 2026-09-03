@@ -9,7 +9,7 @@ autor: brain-framework
 
 # Referências externas
 
-Índice do material externo que embasa o Brain. Tudo aqui entra **apenas por link** — nenhuma cópia é vendorizada sem verificação prévia de licença, conforme a política de skills do framework (ver [CONTRIBUTING.md](../CONTRIBUTING.md)).
+Índice do material externo que embasa o Shizune. Tudo aqui entra **apenas por link** — nenhuma cópia é vendorizada sem verificação prévia de licença, conforme a política de skills do framework (ver [CONTRIBUTING.md](../CONTRIBUTING.md)).
 
 ## Metodologia do pipeline
 

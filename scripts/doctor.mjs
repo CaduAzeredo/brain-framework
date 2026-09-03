@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// doctor.mjs — Checagem completa do Brain em um comando só.
+// doctor.mjs — Checagem completa do Shizune em um comando só.
 //
 // Roda, nesta ordem, os verificadores que já existem, cada um como processo
 // filho (a lógica não é reimplementada aqui — o formato de saída e os códigos
@@ -18,7 +18,7 @@
 // Saída: 0 se todos passaram; 1 se qualquer um falhou. Um verificador que falha
 // não interrompe os seguintes — o objetivo é ver todos os problemas de uma vez.
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/doctor.mjs
 //   bun scripts/doctor.mjs --strict    # repassa --strict ao validate-structure
@@ -30,13 +30,13 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
 }
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const SCRIPTS = path.join(RAIZ, "scripts");
 const STRICT = process.argv.includes("--strict");
 
@@ -77,6 +77,36 @@ const ETAPAS = [
     // todo usuário novo rodar este comando como primeiro contato.
     soNaOrigem: "README-PUBLICO.md",
   },
+  {
+    nome: "issue-lint (teste negativo)",
+    descricao: "o lint de ponteiros detecta ponteiro errado — se passar na fixture, está quebrado",
+    caminho: "projects/diagnostico-publico/test-issue-lint.mjs",
+    args: [],
+    // PROTÓTIPO, e por isso mora em projects/ e não em scripts/. Ele NÃO valida
+    // o conteúdo do Shizune — valida a própria ferramenta contra uma fixture que
+    // o teste cria e destrói. A regra do operador: nenhuma checagem fatal entra
+    // no doctor sem teste negativo antes. Este é o teste; a checagem em si só
+    // vira gate quando o validate-prose-refs.mjs for estendido, e aí abre ADR.
+    soNaOrigem: "projects/diagnostico-publico/issue-lint.prototipo.mjs",
+  },
+  {
+    nome: "decisões (DEC-NNN)",
+    descricao: "commit que cita decisão inexistente ou não assinada",
+    script: "validate-decisions.mjs",
+    args: [],
+  },
+  {
+    nome: "decisões (teste negativo)",
+    descricao: "o validador de DEC acusa registro defeituoso — se passar na fixture, está quebrado",
+    script: "test-validate-decisions.mjs",
+    args: [],
+  },
+  {
+    nome: "índice (teste negativo)",
+    descricao: "o índice cataloga o repositório, não o disco — arquivo fora do git fica fora do índice",
+    script: "test-build-index.mjs",
+    args: [],
+  },
 ];
 
 console.log(`doctor — raiz: ${RAIZ}`);
@@ -97,11 +127,14 @@ for (const etapa of ETAPAS) {
     continue;
   }
 
-  const r = spawnSync(
-    process.execPath,
-    [path.join(SCRIPTS, etapa.script), ...etapa.args],
-    { cwd: RAIZ, stdio: "inherit" },
-  );
+  const alvo = etapa.caminho
+    ? path.join(RAIZ, etapa.caminho)
+    : path.join(SCRIPTS, etapa.script);
+
+  const r = spawnSync(process.execPath, [alvo, ...etapa.args], {
+    cwd: RAIZ,
+    stdio: "inherit",
+  });
 
   // spawnSync devolve status null quando o processo morre por sinal; nesse caso
   // o resultado é indeterminado e conta como falha, não como sucesso.

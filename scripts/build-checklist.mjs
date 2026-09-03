@@ -199,7 +199,7 @@ const STRINGS = {
 
 // --- helpers ----------------------------------------------------------------
 
-function brainRoot() {
+function shizuneRoot() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
@@ -733,7 +733,7 @@ function main() {
     process.exit(2);
   }
 
-  const root = brainRoot();
+  const root = shizuneRoot();
   const sourceRelative = path.relative(root, sourcePath).split(path.sep).join("/");
   const parsed = parseChecklist(fs.readFileSync(sourcePath, "utf8"));
 

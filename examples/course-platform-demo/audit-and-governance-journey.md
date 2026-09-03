@@ -7,13 +7,13 @@ data: 2026-08-30
 autor: brain-framework
 ---
 
-> **This is an example only — adapt it to your own project.** The "Lumina" product is **entirely fictional** ([CONTEXT.md](CONTEXT.md) · [DOMAIN.md](DOMAIN.md)). This document shows end to end how the Brain takes a codebase from "unknown state" to a prioritised, auditable plan — the journey the framework makes repeatable.
+> **This is an example only — adapt it to your own project.** The "Lumina" product is **entirely fictional** ([CONTEXT.md](CONTEXT.md) · [DOMAIN.md](DOMAIN.md)). This document shows end to end how Shizune takes a codebase from "unknown state" to a prioritised, auditable plan — the journey the framework makes repeatable.
 
-# Lumina — From audit to governance: a journey with the Brain
+# Lumina — From audit to governance: a journey with Shizune
 
-## The problem the Brain solves
+## The problem Shizune solves
 
-Every inherited codebase arrives with the same unanswered question: *what actually works, what is safe, and what is missing before launch?* The README says one thing, the tests say another, and the production database says a third. The Brain turns that uncertainty into a verifiable map: an immutable report, a project dossier and a prioritised backlog with estimates — all under governance rules that stop assumption from becoming fact.
+Every inherited codebase arrives with the same unanswered question: *what actually works, what is safe, and what is missing before launch?* The README says one thing, the tests say another, and the production database says a third. Shizune turns that uncertainty into a verifiable map: an immutable report, a project dossier and a prioritised backlog with estimates — all under governance rules that stop assumption from becoming fact.
 
 This journey uses Lumina (a fictional course platform) as its subject. The method is the same for any project.
 
@@ -35,7 +35,7 @@ You can read the real artifacts of this demo, in order: [spec-002](specs/spec-00
 
 ## The differentiator: adversarial verification
 
-The Brain does not trust its first finding. Every candidate defect is re-verified by reading the real code, with a `file:line` reference, and receives an explicit verdict — **Confirmed**, **Partial** or **Refuted**. A finding that fails to reconfirm is downgraded in writing, never quietly dropped. In Lumina's journey two "obvious" hypotheses fell through that sieve: the certificate PDF was reported as being generated twice per enrolment, and re-reading the job showed a single write with a retried upload; and a quiz score was reported as rounding against the student, which turned out to be correct and merely displayed without its decimal. Reporting what is **not** a problem is as valuable as reporting what is.
+Shizune does not trust its first finding. Every candidate defect is re-verified by reading the real code, with a `file:line` reference, and receives an explicit verdict — **Confirmed**, **Partial** or **Refuted**. A finding that fails to reconfirm is downgraded in writing, never quietly dropped. In Lumina's journey two "obvious" hypotheses fell through that sieve: the certificate PDF was reported as being generated twice per enrolment, and re-reading the job showed a single write with a retried upload; and a quiz score was reported as rounding against the student, which turned out to be correct and merely displayed without its decimal. Reporting what is **not** a problem is as valuable as reporting what is.
 
 ## What the method looks for
 
@@ -68,7 +68,7 @@ What makes the journey auditable is not the findings — it is what surrounds th
 
 - **ADRs (decision records).** Every architecture or process decision becomes a numbered record: immutable, supersedable, never rewritten. Six months later you can still learn *why* something was decided.
 - **Immutable, dated reports.** The audit report is born in `logs/<year>/<project>/` and is never edited; a late finding becomes a dated addendum. The trail is trustworthy precisely because it cannot be rewritten.
-- **Quarantine for sensitive data.** When the project belongs to a client, the Brain isolates everything: private material lives outside any exportable area, automated validators redact sensitive names, and the public example — this very Lumina — is **100% synthetic**. The framework separates what may be shown from what may not, by construction.
+- **Quarantine for sensitive data.** When the project belongs to a client, Shizune isolates everything: private material lives outside any exportable area, automated validators redact sensitive names, and the public example — this very Lumina — is **100% synthetic**. The framework separates what may be shown from what may not, by construction.
 - **Automated validators.** `validate-structure` checks frontmatter, naming and — fatally — the absence of secrets in any file; `validate-links` ensures no reference breaks. Every step ends green before the next begins.
 
 ## The deliverables
@@ -82,7 +82,7 @@ At the end of a round, the operator receives:
 
 ## Why this matters
 
-Without the Brain: "we think it's ready." With the Brain: a map with `file:line` evidence, traceable decisions, sensitive data contained, and a plan any executor — human or agent — can follow without asking. Lumina's journey went from an opaque codebase to a governed backlog in a single audit round. That process — repeatable, auditable and safe by default — is what the Brain delivers.
+Without Shizune: "we think it's ready." With Shizune: a map with `file:line` evidence, traceable decisions, sensitive data contained, and a plan any executor — human or agent — can follow without asking. Lumina's journey went from an opaque codebase to a governed backlog in a single audit round. That process — repeatable, auditable and safe by default — is what Shizune delivers.
 
 ---
 

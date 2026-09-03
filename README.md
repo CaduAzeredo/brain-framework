@@ -1,28 +1,28 @@
 <div align="center">
 
-# Brain Framework
+# Shizune
 
 **A governance operating system for AI agents.**
 
 Give a coding agent trustworthy context, a named skill pipeline and verifiable writing rules — before it touches any code.
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Checks](https://github.com/CaduAzeredo/brain-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/CaduAzeredo/brain-framework/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/CaduAzeredo/brain-framework?display_name=tag&sort=semver)](https://github.com/CaduAzeredo/brain-framework/releases/latest)
+[![Checks](https://github.com/CaduAzeredo/shizune/actions/workflows/ci.yml/badge.svg)](https://github.com/CaduAzeredo/shizune/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/CaduAzeredo/shizune?display_name=tag&sort=semver)](https://github.com/CaduAzeredo/shizune/releases/latest)
 [![Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen.svg)](#quickstart)
-[![Website](https://img.shields.io/badge/site-caduazeredo.com-3fa372.svg)](https://www.caduazeredo.com/)
+[![Website](https://img.shields.io/badge/site-shizune.dev-3fa372.svg)](https://shizune.dev)
 
-![The Brain pipeline: grill-with-docs, domain-modeling, to-spec, implement, handoff, with human stops and automated validation](docs/assets/pipeline.svg)
+![Shizune pipeline: grill-with-docs, domain-modeling, to-spec, implement, handoff, with human stops and automated validation](docs/assets/pipeline.svg)
 
-**[caduazeredo.com](https://www.caduazeredo.com/)** · [Quickstart](QUICKSTART.md) · [Discussions](https://github.com/CaduAzeredo/brain-framework/discussions)
+**[shizune.dev](https://shizune.dev)** · [Quickstart](QUICKSTART.md) · [Discussions](https://github.com/CaduAzeredo/shizune/discussions)
 
 </div>
 
 ## Quickstart
 
 ```bash
-git clone https://github.com/CaduAzeredo/brain-framework.git
-cd brain-framework
+git clone https://github.com/CaduAzeredo/shizune.git
+cd shizune
 
 bun scripts/doctor.mjs                 # or: node scripts/doctor.mjs — runs every check
 bun scripts/new-project.mjs my-project # scaffold a project
@@ -32,11 +32,11 @@ Then fill in `projects/my-project/CONTEXT.md`, starting from the `grill-with-doc
 
 **No `bun install`, no `npm install`.** The framework has **zero dependencies**: the scripts use only builtins and there is no `package.json`. That is deliberate — it runs on any machine with a JS runtime, with no install step. You need **Bun** (recommended) or **Node.js 20+**, and **git**.
 
-> **Language, v0.2.** The public surface — this README, the quickstart, the agent contract, the contributing guide and the worked example — is written in English. `skills/` and `templates/` are still in Brazilian Portuguese in this release, and so are the frontmatter field names (`tipo`, `projeto`, `data`, `autor`). Translating them is the headline item of the next release — see the [translation issue](https://github.com/CaduAzeredo/brain-framework/issues/new?template=translation.yml). Folder and file names are mostly English; a few structural names are still Portuguese (`templates/projeto/`, and the frontmatter fields above), and they are part of the same translation pass. The framework works in either language, and we would rather ship the machinery than hold it back for a translation pass.
+> **Language, v0.2.** The public surface — this README, the quickstart, the agent contract, the contributing guide and the worked example — is written in English. `skills/` and `templates/` are still in Brazilian Portuguese in this release, and so are the frontmatter field names (`tipo`, `projeto`, `data`, `autor`). Translating them is the headline item of the next release — see the [translation issue](https://github.com/CaduAzeredo/shizune/issues/new?template=translation.yml). Folder and file names are mostly English; a few structural names are still Portuguese (`templates/projeto/`, and the frontmatter fields above), and they are part of the same translation pass. The framework works in either language, and we would rather ship the machinery than hold it back for a translation pass.
 
 ## Why it exists
 
-AI agents degrade without structure. With no explicit contract, every session reinvents the context, contradicts earlier decisions, scatters unpatterned documents and blends hypothesis with fact. The Brain Framework attacks that with four mechanisms:
+AI agents degrade without structure. With no explicit contract, every session reinvents the context, contradicts earlier decisions, scatters unpatterned documents and blends hypothesis with fact. Shizune attacks that with four mechanisms:
 
 - **Canonical per-project context** — one `CONTEXT.md` per project is the single source of truth; the agent reads it before acting instead of inferring.
 - **Recorded decisions (ADRs)** — what was decided, why, and what it superseded. Nothing is deleted: superseded documents move to `archive/`.
@@ -76,8 +76,8 @@ AI agents degrade without structure. With no explicit contract, every session re
 
 ## Basic use — technical audit of a project
 
-1. **Authorise.** Write an ADR authorising the dossier and delimiting what stays quarantined. Use the `brain-adr` skill and the [templates/adr.md](templates/adr.md) template.
-2. **Audit.** Run the audit workstreams over the codebase, **read-only**, with explicit and case-by-case authorisation for any command that writes outside the Brain.
+1. **Authorise.** Write an ADR authorising the dossier and delimiting what stays quarantined. Use the `shizune-adr` skill and the [templates/adr.md](templates/adr.md) template.
+2. **Audit.** Run the audit workstreams over the codebase, **read-only**, with explicit and case-by-case authorisation for any command that writes outside Shizune.
 3. **Record.** Produce the **immutable** report under `logs/<year>/<slug>/` — with methodology, scope, limits and the consolidated findings table (code, severity, verdict, backlog item).
 4. **Dossier.** Generate `projects/<slug>/` through the pipeline: `CONTEXT.md` → `DOMAIN.md` → `specs/` → `tickets/` → `handoffs/`.
 5. **Validate.** Run the validations before any commit.
@@ -95,7 +95,7 @@ bun scripts/build-index.mjs
 
 > **On the export check.** `doctor` includes the public export in dry-run, but that step reports `n/a` until you configure it: the redaction patterns live in a file the export never publishes, so the framework cannot ship yours. Copy `scripts/redaction-patterns.example.json` to `governance/seguranca/redaction-patterns.json` and fill it with your own values — your email, your machine name, your client slugs. Until you do, no redaction pattern is evaluated, and nothing is protecting you from leaking a quarantined term.
 
-> **Human stops.** No write outside the Brain, no push to a client repository and no externally visible action happens without explicit, case-by-case authorisation from the operator. Handoffs mark those stops as blocking.
+> **Human stops.** No write outside Shizune, no push to a client repository and no externally visible action happens without explicit, case-by-case authorisation from the operator. Handoffs mark those stops as blocking.
 
 ## Non-negotiable rules
 
@@ -127,27 +127,27 @@ Public evidence on a real open source codebase is planned and has not been produ
 
 ## Skill format
 
-Skills follow the **Agent Skills** format: each skill is a folder containing a `SKILL.md` whose frontmatter opens with `name` and `description` — that is what lets an agent discover and load the skill on demand. In the Brain, the same frontmatter block also carries the framework governance fields, so skills are governed documents like any other.
+Skills follow the **Agent Skills** format: each skill is a folder containing a `SKILL.md` whose frontmatter opens with `name` and `description` — that is what lets an agent discover and load the skill on demand. In Shizune, the same frontmatter block also carries the framework governance fields, so skills are governed documents like any other.
 
 ## Using this commercially
 
 The framework is free under Apache 2.0 and stays that way. Fork it, run it inside a company, build a product on it — the licence already grants that, and nothing here is gated.
 
-If you want the method applied rather than adopted — a technical audit, a governed dossier, or help standing the pipeline up on your codebase — that is a conversation, not a checkout page. Start at **[caduazeredo.com](https://www.caduazeredo.com/)**, where each engagement is written out with its scope, or open a [discussion](https://github.com/CaduAzeredo/brain-framework/discussions). The author's contact is also in [NOTICE](NOTICE). There is no published price list: pricing that nobody has validated is a hypothesis, and this project does not publish hypotheses as facts.
+If you want the method applied rather than adopted — a technical audit, a governed dossier, or help standing the pipeline up on your codebase — that is a conversation, not a checkout page. Start at **[caduazeredo.com](https://www.caduazeredo.com/)**, where each engagement is written out with its scope, or open a [discussion](https://github.com/CaduAzeredo/shizune/discussions). The author's contact is also in [NOTICE](NOTICE). There is no published price list: pricing that nobody has validated is a hypothesis, and this project does not publish hypotheses as facts.
 
 ## Trademark and naming
 
-The composite **Brain Framework — by Cadu Azeredo** identifies this project and its origin. "Brain" on its own is a common word in this space and is claimed by no one here.
+The composite **Shizune — by Cadu Azeredo** identifies this project and its origin. "Shizune" on its own is a common word in this space and is claimed by no one here.
 
 Apache License 2.0 grants patent and copyright rights; **section 6 explicitly grants no trademark rights.** The licence covers the code, not the name. Concretely:
 
 - The name and visual identity are **not** licensed with the code.
 - A fork is free under the licence, but must not present itself under the composite name or imply endorsement.
-- Describing your work as *"built with the Brain Framework"* is welcome and needs no permission.
+- Describing your work as *"built with Shizune"* is welcome and needs no permission.
 - No affiliation or endorsement is implied by use.
 
-**Not affiliated with** other projects that use "brain" in their name. "Brain" is a common word in the AI-agent space; this project is the one at `CaduAzeredo/brain-framework`.
+**Not affiliated with** other projects that use "shizune" in their name. "Shizune" is a common word in the AI-agent space; this project is the one at `CaduAzeredo/shizune`.
 
 ## License
 
-Apache License 2.0 — Brain Framework © 2026 Cadu Azeredo. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Apache License 2.0 — Shizune © 2026 Cadu Azeredo. See [LICENSE](LICENSE) and [NOTICE](NOTICE).

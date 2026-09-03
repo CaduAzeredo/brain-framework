@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// validate-links.mjs — Verifica links markdown de todos os .md do Brain.
+// validate-links.mjs — Verifica links markdown de todos os .md do Shizune.
 //
 // Erro (exit 1): link relativo cujo alvo não existe no disco.
 // Avisos (não falham): links absolutos (file:/// ou <unidade>:\...), âncoras
@@ -9,7 +9,7 @@
 // código inline (`...`), placeholders com <>, e as pastas archive/, dist/,
 // .git/ e node_modules/.
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/validate-links.mjs
 //   (compatível com node >= 20: node scripts/validate-links.mjs)
@@ -19,13 +19,13 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
 }
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const erros = [];
 const avisos = [];
 const rel = (abs) => path.relative(RAIZ, abs) || ".";
@@ -109,6 +109,24 @@ function verificarArquivo(abs) {
       const resolvido = parteArquivo.startsWith("/")
         ? path.join(RAIZ, parteArquivo)
         : path.resolve(path.dirname(abs), parteArquivo);
+
+      // Link que sai da raiz do repositório aponta para OUTRO repositório na
+      // máquina de quem escreveu — tipicamente `../../../../Dev/<projeto>/…`.
+      // Ele é verificável lá e impossível de verificar em qualquer outro lugar:
+      // no CI, num clone raso, na máquina de outra pessoa. Chamar isso de "alvo
+      // inexistente" é afirmar mais do que se sabe; o que se sabe é que o alvo
+      // não pertence a este repositório. Por isso é AVISO e não erro — e é a
+      // classe de falha que só aparecia no CI, porque na máquina do autor o
+      // caminho existe de verdade.
+      const foraDaRaiz = (() => {
+        const r = path.relative(RAIZ, resolvido);
+        return r.startsWith("..") || path.isAbsolute(r);
+      })();
+      if (foraDaRaiz) {
+        avisos.push(`${caminho}:${n} — externo ao repositório, não verificável daqui: ${alvo}`);
+        continue;
+      }
+
       if (!fs.existsSync(resolvido)) {
         erros.push(`${caminho}:${n} — link quebrado: alvo inexistente "${alvo}" (resolvido para ${rel(resolvido)})`);
       }

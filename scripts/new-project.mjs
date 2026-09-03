@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
-// new-project.mjs — Cria a estrutura de um novo projeto no Brain (ADR-016).
+// new-project.mjs — Cria a estrutura de um novo projeto no Shizune (ADR-016).
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/new-project.mjs <slug>
 //   (compatível com node >= 20: node scripts/new-project.mjs <slug>)
@@ -21,7 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
@@ -30,10 +30,18 @@ function raizDoBrain() {
 // Autor padrão dos documentos gerados. Nome de produto de terceiro não entra em
 // campo de dados (ADR-028 §2): quem clona o framework não deve herdar, carimbada
 // nos próprios documentos, a marca da ferramenta que o autor original usava.
-// Sobrescreva com a variável de ambiente BRAIN_AUTOR.
-const AUTOR = process.env.BRAIN_AUTOR || "brain-framework";
+// Sobrescreva com a variável de ambiente SHIZUNE_AUTOR.
+//
+// BRAIN_AUTOR continua sendo lida, por compatibilidade: ela é contrato público
+// desde antes do renome, e trocar sem aceitar a antiga quebraria em silêncio —
+// o script cairia no padrão sem avisar que ignorou a variável de quem já a tinha
+// configurada. Quando só a antiga estiver presente, o aviso sai na saída.
+const AUTOR = process.env.SHIZUNE_AUTOR || process.env.BRAIN_AUTOR || "shizune";
+if (!process.env.SHIZUNE_AUTOR && process.env.BRAIN_AUTOR) {
+  console.warn("aviso: BRAIN_AUTOR está obsoleta e foi renomeada para SHIZUNE_AUTOR; ainda é lida, mas prefira a nova.");
+}
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const rel = (abs) => path.relative(RAIZ, abs) || ".";
 
 function falhar(msg) {

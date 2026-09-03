@@ -6,6 +6,42 @@ Version history of the Brain Framework. Format: [Keep a Changelog](https://keepa
 
 Nothing yet.
 
+## [0.3.0] - 2026-09-03
+
+**The project is now called Shizune.** Versions up to 0.2.1 above shipped as the Brain Framework, and those entries are left exactly as they were: they describe what the project was called on the day they were written, and rewriting changelog history is precisely the defect this framework helps you find in other repositories. The repository, the site and the package name change here; the entries above do not.
+
+This release also adds the layer the name was chosen for. A watermark says what a machine wrote and a key says who pushed. Neither records **what a human decided** — and that is what this version makes checkable.
+
+### Added
+
+- **A decision record with authority over the build.** `governance/registro-decisoes.md` holds one numbered row per decision; a commit cites one in its trailer as `Decision: DEC-001`; and `scripts/validate-decisions.mjs` fails the build when a commit cites a decision that does not exist, or one that has no signer, or one whose commit SHA does not resolve in the tree. The record ships **empty**, because the decisions in it have to be yours.
+- **A draft state, so a decision can exist before anyone has signed it.** A row marked `rascunho, assinatura pendente` is a legitimate resting state — it warns, it does not fail — but any commit that cites it fails immediately. Nothing may lean on what nobody has signed.
+- **Optional enforcement of verified key signatures.** Declare an authorship frontier and a trust list, both inside the repository, and every commit after the frontier must carry a signature from a key on that list:
+
+  ```
+  governance/fronteira-de-autoria.txt
+  .github/allowed_signers
+  ```
+
+  Only a good signature from a listed key counts; "somebody signed" is not "the owner signed". Absent both files, nothing fails and the validator says the layer is off — it never reports a check it did not perform. The quickstart has the setup.
+- **Negative tests for the two checks that could rot silently.** `scripts/test-validate-decisions.mjs` (28 assertions) and `scripts/test-build-index.mjs` (7) build throwaway fixtures and assert that each tool **fails** when it should. A validator that only ever passes is indistinguishable from one that does nothing; these run in `doctor` and in CI.
+- **`scripts/checar-nome.sh`** — availability check for a candidate project name across npm and the common TLDs, with the limits of each source documented in the script rather than assumed.
+
+### Fixed
+
+- **A worked example inside a fenced block was being read as a real decision.** The record documents its own format with a sample row; the parser did not skip fenced code, so the sample — which carries an invented SHA, as samples do — failed the build with "signature does not resolve", pointing at the documentation. Documentation is not data. Found in the seed this release publishes, before publishing it.
+
+### Changed
+
+- **CI runs every check, not two of them.** The workflow used to invoke `validate-structure.mjs` and `validate-links.mjs` directly and skip `doctor` — the reason being that two of doctor's steps only apply in the private instance a package is exported from. Those steps now detect that for themselves and report `n/a`, so the exclusion had outlived its cause, and keeping it meant shipping validators with nothing to execute them. The workflow now runs `doctor` and checks out with full history, which the frontier check needs.
+- **`doctor` runs nine checks**, up from eight.
+- **The index generator catalogues the repository, not the disk.** `scripts/build-index.mjs` now reads what git tracks, and names on stdout every `.md` it left out for being uncommitted. Reading the working tree meant an uncommitted file could be indexed and then linked from a commit that did not contain it. Without git — a downloaded zip — it indexes everything and says so.
+- **`BRAIN_AUTOR` is now `SHIZUNE_AUTOR`.** The old variable still works and prints a deprecation notice.
+
+### Note on names
+
+Files already generated with `autor: brain-framework` are left alone. The default changed without acting retroactively, and a tree carrying both values is real history rather than an inconsistency to paper over.
+
 ## [0.2.1] - 2026-08-31
 
 Follow-up to the adversarial pre-publication audit. Seven findings survived refutation and are closed here; none of them affect how the framework runs.

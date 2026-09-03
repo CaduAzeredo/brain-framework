@@ -48,7 +48,7 @@ Extrair do `CONTEXT.md` as entidades, relações, invariantes e estados do domí
 ## Saída
 
 - **Artefato:** `DOMAIN.md` do projeto.
-- **Destino:** `projects/<slug>/DOMAIN.md` (a partir da raiz do Brain).
+- **Destino:** `projects/<slug>/DOMAIN.md` (a partir da raiz do Shizune).
 - **Template:** [templates/projeto/DOMAIN.md](../../../templates/projeto/DOMAIN.md).
 - Modelo anterior superado vai para `archive/` do projeto — nada é apagado (ADR-015).
 

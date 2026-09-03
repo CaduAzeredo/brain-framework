@@ -35,13 +35,13 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
 }
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const ESTRITO = process.argv.includes("--strict");
 const erros = [];
 const declaradas = [];
@@ -72,7 +72,7 @@ function coletar() {
   return resultado;
 }
 
-// Extrai o status de um documento. Aceita as duas convenções vivas no Brain:
+// Extrai o status de um documento. Aceita as duas convenções vivas no Shizune:
 // frontmatter v2 (`status: proposto`) e o cabeçalho dos ADRs legados
 // (`**Status:** Aprovado` / `- **Status**: \`Proposto\``).
 function lerStatus(texto) {

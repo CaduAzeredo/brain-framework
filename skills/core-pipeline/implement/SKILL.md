@@ -24,7 +24,7 @@ Implementar contra a spec, no repositório do projeto, deixando trilha auditáve
 ## Quando NÃO usar
 
 - Não há spec vigente para o trabalho — rode `to-spec` primeiro. Código sem spec não tem critério de pronto.
-- Não há autorização explícita do operador para escrever fora da raiz do Brain — toda escrita em repositório de projeto exige essa autorização; sem ela, o limite é diagnóstico e leitura.
+- Não há autorização explícita do operador para escrever fora da raiz do Shizune — toda escrita em repositório de projeto exige essa autorização; sem ela, o limite é diagnóstico e leitura.
 - O que a spec pede contradiz o que o repositório mostra — o caso é voltar para `to-spec` (e talvez `grill-with-docs`), não implementar por cima da contradição.
 - A dúvida principal ainda é **viabilidade** (integração desconhecida, API sem documentação confiável, desempenho incerto). O caminho barato é um **protótipo descartável**, feito para ser jogado fora, antes de gastar spec e implementação: descobrir que não funciona custa pouco no protótipo e custa a rodada inteira depois. Três condições, sem exceção: (a) vive fora do caminho de produção; (b) é declarado protótipo no registro, com a evidência classificada como local ou não validada, nunca como evidência de produção; (c) não dispensa a spec — se o protótipo dá certo, a spec vem depois e o código é reescrito. O que se aproveita é o aprendizado, não o arquivo.
 
@@ -56,8 +56,8 @@ Implementar contra a spec, no repositório do projeto, deixando trilha auditáve
 
 ## Saída
 
-- **Artefato:** código e testes no repositório do projeto (fora do Brain, sob autorização explícita) + ticket de execução no Brain.
-- **Destino do ticket:** `projects/<slug>/tickets/ticket-NNN-<titulo>.md` (a partir da raiz do Brain).
+- **Artefato:** código e testes no repositório do projeto (fora do Shizune, sob autorização explícita) + ticket de execução no Shizune.
+- **Destino do ticket:** `projects/<slug>/tickets/ticket-NNN-<titulo>.md` (a partir da raiz do Shizune).
 - **Template:** [templates/ticket.md](../../../templates/ticket.md).
 
 ## Critérios de conclusão
@@ -81,7 +81,7 @@ Implementar contra a spec, no repositório do projeto, deixando trilha auditáve
 - **Improviso silencioso.** A spec diverge da realidade e o implementador "resolve" sozinho, sem registro. O desvio invisível de hoje é a citação circular de amanhã.
 - **Escopo elástico.** Corrigir problemas vizinhos "já que estou aqui" — cada correção fora de escopo é mudança sem spec e sem critério de pronto.
 - **Ticket cosmético.** Diário escrito ao final, contando a versão limpa. O valor do ticket está nas decisões e nos desvios registrados quando aconteceram.
-- **Escrever sem autorização.** Qualquer escrita fora da raiz do Brain sem autorização explícita do operador viola a governança, ainda que o código esteja correto.
+- **Escrever sem autorização.** Qualquer escrita fora da raiz do Shizune sem autorização explícita do operador viola a governança, ainda que o código esteja correto.
 - **Integração adiada para o fim.** Construir várias peças em paralelo e juntá-las só no final. Quando o defeito aparece, ele pode estar em qualquer uma delas ou na costura, e o custo de isolar cresce mais rápido que o número de peças.
 - **Teste pulado por dificuldade.** "Esse trecho é difícil de testar" tratado como característica do trecho, e não como sintoma do desenho. O teste difícil é o aviso chegando cedo; ignorá-lo é pagar o mesmo preço depois, com juros.
 - **Protótipo promovido a produção.** O código feito para ser jogado fora sobrevive porque "já está funcionando". Ele foi escrito sob outras premissas, sem spec e sem critério de pronto — promovê-lo é entrar em produção com dívida que ninguém contratou.

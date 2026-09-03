@@ -41,7 +41,7 @@ Converter o entendimento consolidado em `CONTEXT.md` e `DOMAIN.md` em uma especi
 4. **Escreva escopo e não-escopo.** O não-escopo é lista explícita do que um leitor razoável poderia supor incluído e não está. Não-escopo vazio é sinal de recorte mal feito.
 5. **Especifique o comportamento esperado.** Para cada comportamento, um ou mais critérios de aceitação VERIFICÁVEIS: ação ou comando concreto, e resultado observável esperado. "Funciona corretamente" não é critério; "a rota responde 400 com mensagem contendo X" é.
 6. **Especifique os casos de erro.** Entrada inválida, estado inesperado, falha de dependência externa — e o comportamento esperado em cada um. Caso de erro sem comportamento definido é decisão empurrada para o improviso do implementador.
-7. **Liste as dependências.** O que precisa existir ou estar decidido antes da implementação. Dependência que exige escrita fora da raiz do Brain ou mudança de ambiente é marcada `[AUTORIZAÇÃO]` — só o operador libera.
+7. **Liste as dependências.** O que precisa existir ou estar decidido antes da implementação. Dependência que exige escrita fora da raiz do Shizune ou mudança de ambiente é marcada `[AUTORIZAÇÃO]` — só o operador libera.
 8. **Registre riscos e aberturas.** O que pode invalidar a spec, o que ficou deliberadamente em aberto e quem decide.
 9. **Rastreie para o domínio.** Cada requisito referencia a entidade, invariante ou transição do `DOMAIN.md` que o sustenta. Requisito que contradiz um invariante exige decisão registrada — nunca contradição silenciosa.
 10. **Escreva a spec** no destino indicado na seção Saída, seguindo o template. Frontmatter v2 obrigatório.
@@ -49,7 +49,7 @@ Converter o entendimento consolidado em `CONTEXT.md` e `DOMAIN.md` em uma especi
 ## Saída
 
 - **Artefato:** especificação executável de uma unidade entregável.
-- **Destino:** `projects/<slug>/specs/spec-NNN-<titulo>.md` (a partir da raiz do Brain).
+- **Destino:** `projects/<slug>/specs/spec-NNN-<titulo>.md` (a partir da raiz do Shizune).
 - **Template:** [templates/spec.md](../../../templates/spec.md).
 - Spec superada por revisão vai para `archive/` do projeto — nada é apagado (ADR-015).
 

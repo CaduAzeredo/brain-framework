@@ -1,7 +1,13 @@
-# Brain Framework — public repository checks.
+# Shizune — public repository checks.
 # Zero dependencies: nothing is installed, the validators run on runtime builtins alone.
-# Deliberately excluded: doctor.mjs and export-public.mjs — the export allowlist references files
-# that exist only in the private instance, so neither step belongs in this workflow.
+#
+# This workflow runs `doctor`, which is the same entry point the QUICKSTART tells a new user to
+# run. Two of doctor's steps only make sense in the private instance the package is exported from
+# — the export dry-run and the pointer-lint negative test — and doctor itself skips them when the
+# files they need are absent, reporting them as `n/a (pacote exportado)` rather than failing. An
+# earlier version of this workflow ran two validators directly and excluded doctor for that
+# reason; the guard removed the reason, and running the two alone shipped validators that nothing
+# executed.
 
 name: checks
 
@@ -25,17 +31,19 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
+        with:
+          # Full history. The decision validator reads commit trailers and, if you declare an
+          # authorship frontier, has to reach the frontier commit itself. The default shallow
+          # clone cannot, and the check would be skipped with a warning instead of enforced.
+          fetch-depth: 0
 
       - name: Set up Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Validate structure and frontmatter
-        run: node scripts/validate-structure.mjs
-
-      - name: Validate relative links
-        run: node scripts/validate-links.mjs
+      - name: Run every check
+        run: node scripts/doctor.mjs
 
   bun:
     name: validators on Bun
@@ -43,12 +51,11 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Validate structure and frontmatter
-        run: bun scripts/validate-structure.mjs
-
-      - name: Validate relative links
-        run: bun scripts/validate-links.mjs
+      - name: Run every check
+        run: bun scripts/doctor.mjs

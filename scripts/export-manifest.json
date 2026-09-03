@@ -18,6 +18,10 @@
       "from": "governance/registro-projetos.seed.yaml",
       "to": "governance/registro-projetos.yaml"
     },
+    {
+      "from": "governance/registro-decisoes.seed.md",
+      "to": "governance/registro-decisoes.md"
+    },
     "skills/**",
     "templates/**",
     "scripts/**",

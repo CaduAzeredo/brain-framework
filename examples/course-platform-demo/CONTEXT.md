@@ -11,7 +11,7 @@ autor: brain-framework
 
 # Lumina — Context
 
-Lumina is a fictional online course platform: instructors publish courses with video lessons and quizzes, and students complete tracks and receive certificates. This file demonstrates the canonical project context format of the Brain.
+Lumina is a fictional online course platform: instructors publish courses with video lessons and quizzes, and students complete tracks and receive certificates. This file demonstrates the canonical project context format of Shizune.
 
 ## Overview
 

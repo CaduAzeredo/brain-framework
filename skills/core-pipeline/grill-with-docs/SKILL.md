@@ -50,7 +50,7 @@ Interrogar a documentação e o código reais de um projeto ANTES de qualquer pl
 ## Saída
 
 - **Artefato:** `CONTEXT.md` do projeto.
-- **Destino:** `projects/<slug>/CONTEXT.md` (a partir da raiz do Brain).
+- **Destino:** `projects/<slug>/CONTEXT.md` (a partir da raiz do Shizune).
 - **Template:** [templates/projeto/CONTEXT.md](../../../templates/projeto/CONTEXT.md).
 - Se já existir um `CONTEXT.md` superado, ele vai para `archive/` do projeto — nada é apagado (ADR-015).
 

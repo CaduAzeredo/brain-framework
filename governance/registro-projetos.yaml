@@ -1,4 +1,4 @@
-# registro-projetos.yaml — registro machine-first dos projetos da sua instância do Brain.
+# registro-projetos.yaml — registro machine-first dos projetos da sua instância do Shizune.
 # Semente do framework: comece vazio e adicione projetos com `bun scripts/new-project.mjs <slug>`.
 # (No export público este arquivo é renomeado para governance/registro-projetos.yaml.)
 #
@@ -7,7 +7,7 @@
 #   nome:   nome de exibição do projeto
 #   status: ativo | pausado | planejado | arquivado | bloqueado
 #   repo:   caminho do repositório real no disco (null se ainda não existe)
-#   ficha:  caminho relativo à raiz do Brain para a ficha do projeto (null se ainda não existe)
+#   ficha:  caminho relativo à raiz do Shizune para a ficha do projeto (null se ainda não existe)
 #   nota:   observação curta e livre (opcional)
 
 atualizado: 2026-08-27

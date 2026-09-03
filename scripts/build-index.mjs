@@ -8,17 +8,18 @@
 //     categoria = pasta pai, description, caminho) + seção fixa "Bibliotecas
 //     externas" (references/README.md e nota da biblioteca vendor — ADR-019).
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/build-index.mjs
 //   (compatível com node >= 20: node scripts/build-index.mjs)
 // ---------------------------------------------------------------------------
 
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
@@ -27,10 +28,18 @@ function raizDoBrain() {
 // Autor padrão dos documentos gerados. Nome de produto de terceiro não entra em
 // campo de dados (ADR-028 §2): quem clona o framework não deve herdar, carimbada
 // nos próprios documentos, a marca da ferramenta que o autor original usava.
-// Sobrescreva com a variável de ambiente BRAIN_AUTOR.
-const AUTOR = process.env.BRAIN_AUTOR || "brain-framework";
+// Sobrescreva com a variável de ambiente SHIZUNE_AUTOR.
+//
+// BRAIN_AUTOR continua sendo lida, por compatibilidade: ela é contrato público
+// desde antes do renome, e trocar sem aceitar a antiga quebraria em silêncio —
+// o script cairia no padrão sem avisar que ignorou a variável de quem já a tinha
+// configurada. Quando só a antiga estiver presente, o aviso sai na saída.
+const AUTOR = process.env.SHIZUNE_AUTOR || process.env.BRAIN_AUTOR || "shizune";
+if (!process.env.SHIZUNE_AUTOR && process.env.BRAIN_AUTOR) {
+  console.warn("aviso: BRAIN_AUTOR está obsoleta e foi renomeada para SHIZUNE_AUTOR; ainda é lida, mas prefira a nova.");
+}
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const rel = (abs) => path.relative(RAIZ, abs) || ".";
 const relPosix = (abs) => rel(abs).split(path.sep).join("/");
 
@@ -104,8 +113,8 @@ function frontmatterIndice(id) {
 const arqIndice = path.join(RAIZ, "governance", "INDICE.md");
 const arqSkillsReadme = path.join(RAIZ, "skills", "README.md");
 
-if (!fs.existsSync(path.join(RAIZ, "governance"))) falhar("pasta governance/ não encontrada na raiz do Brain");
-if (!fs.existsSync(path.join(RAIZ, "skills"))) falhar("pasta skills/ não encontrada na raiz do Brain");
+if (!fs.existsSync(path.join(RAIZ, "governance"))) falhar("pasta governance/ não encontrada na raiz do Shizune");
+if (!fs.existsSync(path.join(RAIZ, "skills"))) falhar("pasta skills/ não encontrada na raiz do Shizune");
 
 // --- coleta dos documentos ---------------------------------------------------
 
@@ -114,11 +123,50 @@ const documentos = [];
 let ignorados = 0;
 
 // governance/public-package/ e area de staging dos artefatos do GitHub
-// (SECURITY, CODE_OF_CONDUCT, template de PR). Eles nao sao documentos do Brain,
+// (SECURITY, CODE_OF_CONDUCT, template de PR). Eles nao sao documentos do Shizune,
 // nao carregam frontmatter v2 e nao entram no indice — do mesmo jeito que
 // scripts/validate-structure.mjs ja os isenta. Sem esta linha o gerador avisa
 // sobre eles toda vez que roda, e aviso que sempre aparece deixa de ser lido.
 const STAGING_PUBLICO = path.join(RAIZ, "governance", "public-package");
+
+// --- só o que o git rastreia -------------------------------------------------
+//
+// O índice cataloga o REPOSITÓRIO, e arquivo que existe no disco sem estar no
+// git ainda não é do repositório. Indexá-lo produz uma entrada com link para
+// um caminho que não existe em nenhum commit — e quem commitar o índice leva
+// junto um link quebrado, que só aparece no CI.
+//
+// Isso não é hipótese: aconteceu duas vezes em 2026-09-03. Três sessões
+// paralelas compartilham esta árvore; arquivos prontos de uma delas ficaram
+// dias sem commit, o índice os catalogou, e dois commits de outra trilha
+// reprovaram em `links` no CI. O contorno foi gerar o índice num clone limpo.
+// Esta função remove a causa em vez de pedir que três sessões se lembrem.
+//
+// Degrada com clareza: sem git, ou fora de um repositório, indexa tudo como
+// antes e diz que fez isso. Melhor um índice completo e anunciado do que um
+// índice vazio e silencioso.
+const rastreados = (() => {
+  try {
+    const saida = execFileSync("git", ["-C", RAIZ, "ls-files", "-z"], {
+      stdio: ["ignore", "pipe", "ignore"],
+      maxBuffer: 1 << 26,
+    }).toString();
+    const s = new Set();
+    for (const p of saida.split("\0")) if (p) s.add(path.resolve(RAIZ, p));
+    return s.size ? s : null;
+  } catch {
+    return null;
+  }
+})();
+
+const naoRastreados = [];
+
+function ehRastreado(abs) {
+  if (!rastreados) return true; // sem git: comporta-se como antes
+  if (rastreados.has(abs)) return true;
+  naoRastreados.push(rel(abs));
+  return false;
+}
 
 function coletar(dir) {
   if (dir === STAGING_PUBLICO) return;
@@ -130,6 +178,7 @@ function coletar(dir) {
     if (ent.isDirectory()) { coletar(abs); continue; }
     if (!ent.isFile() || !ent.name.toLowerCase().endsWith(".md")) continue;
     if (gerados.has(abs)) continue; // entradas sintéticas cobrem os gerados
+    if (!ehRastreado(abs)) continue;
     const campos = parseFrontmatter(fs.readFileSync(abs, "utf8"));
     if (!campos || !campos.get("id")) {
       ignorados++;
@@ -156,6 +205,7 @@ for (const ent of fs.readdirSync(RAIZ, { withFileTypes: true })) {
   if (!ent.isFile() || !ent.name.toLowerCase().endsWith(".md")) continue;
   if (ARQUIVOS_LEGADOS_RAIZ.has(ent.name)) continue; // legado sem frontmatter (Onda 4)
   const abs = path.join(RAIZ, ent.name);
+  if (!ehRastreado(abs)) continue;
   const campos = parseFrontmatter(fs.readFileSync(abs, "utf8"));
   if (!campos || !campos.get("id")) {
     ignorados++;
@@ -192,7 +242,7 @@ const indiceMd = [
   frontmatterIndice("indice-geral"),
   CABECALHO_GERADO,
   "",
-  "# Índice geral do Brain",
+  "# Índice geral do Shizune",
   "",
   "Índice gerado dos documentos Markdown com frontmatter v2 (ADR-018) das pastas novas indexáveis e da raiz (`logs/` fica fora: registros imutáveis datados não são documentos vivos).",
   "Para regenerar: `bun scripts/build-index.mjs`.",
@@ -264,6 +314,14 @@ fs.writeFileSync(arqSkillsReadme, skillsMd, "utf8");
 
 console.log(`Gerado: ${rel(arqIndice)} (${documentos.length} documento(s) indexados)`);
 console.log(`Gerado: ${rel(arqSkillsReadme)} (${skills.length} skill(s) catalogadas)`);
+if (!rastreados) {
+  console.log("[AVISO] git indisponível ou fora de repositório — o índice cobriu TUDO que está no disco, inclusive arquivo não commitado.");
+}
+if (naoRastreados.length) {
+  console.log(`[AVISO] ${naoRastreados.length} arquivo(s) .md ficaram FORA do índice por não estarem no git:`);
+  for (const f of naoRastreados.sort()) console.log(`          ${f}`);
+  console.log("        Commite-os e rode de novo para que entrem. Índice cataloga o repositório, não o disco.");
+}
 if (ignorados) {
   console.log(`[AVISO] ${ignorados} arquivo(s) .md fora do índice por falta de frontmatter v2 — rode bun scripts/validate-structure.mjs`);
 }

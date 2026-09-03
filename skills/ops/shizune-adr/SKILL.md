@@ -1,7 +1,7 @@
 ---
-name: brain-adr
-description: How to write an ADR (Architecture Decision Record) for the Brain. Use when recording a new decision, superseding an existing ADR, or citing ADRs across projects. Triggers: "criar ADR", "registrar decisão", "novo ADR", "superar ADR", "write an ADR", "record this decision".
-id: skill-brain-adr
+name: shizune-adr
+description: How to write an ADR (Architecture Decision Record) for Shizune. Use when recording a new decision, superseding an existing ADR, or citing ADRs across projects. Triggers: "criar ADR", "registrar decisão", "novo ADR", "superar ADR", "write an ADR", "record this decision".
+id: skill-shizune-adr
 tipo: skill
 projeto: global
 status: vigente
@@ -9,19 +9,19 @@ data: 2026-08-27
 autor: brain-framework
 ---
 
-# Brain ADR
+# Shizune ADR
 
-Esta skill define como redigir, numerar e registrar um ADR do Brain, e como referenciar ADRs de outros projetos sem colisão de namespace. As regras de numeração e supersessão vêm do ADR-015 (saneamento do catálogo de ADRs).
+Esta skill define como redigir, numerar e registrar um ADR do Shizune, e como referenciar ADRs de outros projetos sem colisão de namespace. As regras de numeração e supersessão vêm do ADR-015 (saneamento do catálogo de ADRs).
 
 ## Propósito
 
-Garantir que cada decisão do Brain fique registrada uma única vez, com número único, formato previsível e trilha de supersessão explícita — sem jamais reescrever a história.
+Garantir que cada decisão do Shizune fique registrada uma única vez, com número único, formato previsível e trilha de supersessão explícita — sem jamais reescrever a história.
 
 ## Quando usar
 
 - Uma decisão de arquitetura, governança ou processo foi tomada e precisa virar registro.
 - Uma decisão existente foi substituída e o ADR antigo precisa ser marcado como superado.
-- Um documento do Brain precisa citar um ADR de outro projeto e há risco de ambiguidade de numeração.
+- Um documento do Shizune precisa citar um ADR de outro projeto e há risco de ambiguidade de numeração.
 
 ## Processo
 
@@ -53,9 +53,9 @@ Garantir que cada decisão do Brain fique registrada uma única vez, com número
 
 ## Anti-padrões
 
-- **Renumerar ou preencher buracos.** O catálogo do Brain já teve número duplicado com dois assuntos distintos e saltos de numeração. A resposta correta foi documentar a inconsistência e seguir em frente (ADR-015) — nunca reescrever números, que quebraria toda referência existente.
+- **Renumerar ou preencher buracos.** O catálogo do Shizune já teve número duplicado com dois assuntos distintos e saltos de numeração. A resposta correta foi documentar a inconsistência e seguir em frente (ADR-015) — nunca reescrever números, que quebraria toda referência existente.
 - **ADR órfão.** Criar o arquivo avulso sem registrar a linha na tabela. O catálogo se divide em dois índices que se desconhecem.
 - **ADR guarda-chuva.** Empacotar três decisões em um ADR porque nasceram na mesma sessão. Supersessão parcial fica impossível: não há como superar um terço de um ADR.
 - **Superar editando.** "Atualizar" o ADR antigo para refletir a decisão nova. ADR é registro imutável; quem muda é o status na tabela, e a história permanece legível.
-- **Citação sem prefixo.** Escrever "conforme o ADR-002" em documento do Brain quando a intenção era o ADR-002 de outro projeto. O leitor resolve para o ADR errado sem perceber.
+- **Citação sem prefixo.** Escrever "conforme o ADR-002" em documento do Shizune quando a intenção era o ADR-002 de outro projeto. O leitor resolve para o ADR errado sem perceber.
 - **ADR de decisão não tomada.** Registrar como ADR algo ainda em discussão. Rascunho tem lugar, mas o status precisa dizer isso explicitamente — e a decisão só numera a tabela quando existir.

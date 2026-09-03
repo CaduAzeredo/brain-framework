@@ -1,19 +1,19 @@
 #requires -Version 7.0
 # ---------------------------------------------------------------------------
 # link-skills.ps1 — Cria/atualiza junctions POR SKILL em ~\.claude\skills,
-# uma por pasta skills\<categoria>\<skill> desta instância do Brain (a raiz do
-# Brain é resolvida como a pasta pai de scripts\).
+# uma por pasta skills\<categoria>\<skill> desta instância do Shizune (a raiz do
+# Shizune é resolvida como a pasta pai de scripts\).
 #
 # Uso:
 #   pwsh scripts/link-skills.ps1 -WhatIf        # simulação — nada é escrito
 #   pwsh scripts/link-skills.ps1 -Autorizado    # execução real
 #
 # Idempotente: junctions corretas são mantidas, divergentes são recriadas e
-# junctions órfãs (que apontam para dentro da raiz do Brain mas não têm mais
+# junctions órfãs (que apontam para dentro da raiz do Shizune mas não têm mais
 # skill correspondente) são removidas. Pastas reais e links de terceiros no
 # destino nunca são tocados.
 # ---------------------------------------------------------------------------
-# AVISO: a execução deste script escreve FORA da raiz do Brain (no diretório
+# AVISO: a execução deste script escreve FORA da raiz do Shizune (no diretório
 # $env:USERPROFILE\.claude\skills) e exige autorização explícita e pontual do
 # operador — política de fronteiras de escrita do AGENTS.md. Sem o switch
 # -Autorizado o script recusa a execução (apenas -WhatIf é aceito).
@@ -23,7 +23,7 @@ param(
     [switch]$Autorizado
 )
 
-Write-Warning ("Este script escreve FORA da raiz do Brain (em $env:USERPROFILE\.claude\skills) " +
+Write-Warning ("Este script escreve FORA da raiz do Shizune (em $env:USERPROFILE\.claude\skills) " +
     "e exige autorização explícita e pontual do operador (fronteiras de escrita do AGENTS.md).")
 
 $ErrorActionPreference = 'Stop'
@@ -34,8 +34,8 @@ if (-not $Autorizado -and -not $WhatIfPreference) {
     exit 1
 }
 
-$BrainRoot  = Split-Path -Parent $PSScriptRoot
-$SkillsRoot = Join-Path $BrainRoot 'skills'
+$ShizuneRoot  = Split-Path -Parent $PSScriptRoot
+$SkillsRoot = Join-Path $ShizuneRoot 'skills'
 $DestRoot   = Join-Path $env:USERPROFILE '.claude\skills'
 
 if (-not (Test-Path -LiteralPath $SkillsRoot)) {
@@ -102,13 +102,13 @@ foreach ($nome in ($porNome.Keys | Sort-Object)) {
     $criadas++
 }
 
-# Remove junctions órfãs: apontam para dentro da raiz do Brain, mas a skill
+# Remove junctions órfãs: apontam para dentro da raiz do Shizune, mas a skill
 # correspondente não existe mais (ou mudou de lugar).
 if (Test-Path -LiteralPath $DestRoot) {
     foreach ($item in (Get-ChildItem -Path $DestRoot -Directory -Force)) {
         if ($item.LinkType -ne 'Junction' -or -not $item.Target) { continue }
         $t = [string]$item.Target
-        if (-not $t.StartsWith($BrainRoot, [System.StringComparison]::OrdinalIgnoreCase)) { continue }
+        if (-not $t.StartsWith($ShizuneRoot, [System.StringComparison]::OrdinalIgnoreCase)) { continue }
         $desejada = $porNome.ContainsKey($item.Name) -and ($porNome[$item.Name].FullName -eq $t)
         if (-not $desejada) {
             if ($PSCmdlet.ShouldProcess($item.FullName, "Remover junction órfã (alvo: $t)")) {

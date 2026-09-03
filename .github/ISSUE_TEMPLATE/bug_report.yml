@@ -34,7 +34,7 @@ body:
       label: Steps to reproduce
       description: Numbered steps, starting from a fresh clone wherever you can. A report that reproduces on a clean checkout is fixed in a fraction of the time.
       value: |
-        1. `git clone https://github.com/CaduAzeredo/brain-framework.git && cd brain-framework`
+        1. `git clone https://github.com/CaduAzeredo/shizune.git && cd shizune`
         2.
         3.
     validations:

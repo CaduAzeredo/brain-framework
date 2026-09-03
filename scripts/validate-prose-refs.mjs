@@ -31,7 +31,7 @@
 // .git/ e node_modules/. Modo padrão também ignora as pastas legadas
 // congeladas; --strict as inclui.
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/validate-prose-refs.mjs
 //   bun scripts/validate-prose-refs.mjs --strict
@@ -42,13 +42,13 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
 }
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const ESTRITO = process.argv.includes("--strict");
 const erros = [];
 const declaradas = [];
@@ -168,13 +168,22 @@ function verificarArquivo(abs) {
       if (bruto === "" || /[<>*\s]/.test(bruto)) continue; // placeholder, curinga ou frase
       if (/^[~/]|^[A-Za-z]:[\\/]/.test(bruto)) continue;   // fora deste repositório
       if (/\.\.\.|NNN|nnn/.test(bruto)) continue;          // placeholder de nome
-      const ext = path.extname(bruto).toLowerCase();
+      // A normalização de `\` para `/` tem de vir ANTES de basename/extname, e
+      // esta ordem é o conserto de uma falha que só aparecia no CI. No Windows,
+      // path.basename("00-governanca\\DECISOES.md") devolve "DECISOES.md"; no
+      // Linux devolve a string inteira, porque `\` não é separador em POSIX.
+      // Com o basename errado, tanto a busca em nomesExistentes quanto a
+      // consulta às ausências declaradas falhavam, e o validador acusava
+      // arquivo inexistente para caminho que existe. Usar path.posix depois de
+      // normalizar dá o mesmo resultado nos dois sistemas.
+      const normalizado = bruto.replace(/\\/g, "/").replace(/^\.\//, "");
+
+      const ext = path.posix.extname(normalizado).toLowerCase();
       if (!EXTENSOES.has(ext)) continue;
 
-      const base = path.basename(bruto);
+      const base = path.posix.basename(normalizado);
       if (GENERICOS.has(base)) continue;
 
-      const normalizado = bruto.replace(/\\/g, "/").replace(/^\.\//, "");
       totalRefs++;
 
       if (nomesExistentes.has(normalizado) || nomesExistentes.has(base)) continue;

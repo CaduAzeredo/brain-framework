@@ -1,6 +1,6 @@
 # Security Policy
 
-This policy covers the **Brain Framework** as published in this repository: the validation and export scripts, the templates, the skills, the worked example and the workflow definitions that ship with them.
+This policy covers the **Shizune** as published in this repository: the validation and export scripts, the templates, the skills, the worked example and the workflow definitions that ship with them.
 
 It does not cover the instance you build with the framework. That distinction is the whole of the [Scope](#scope) section below, and it is worth reading before you report.
 

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// export-public.mjs — Gera a versão pública do Brain em dist/public (ADR-017).
+// export-public.mjs — Gera a versão pública do Shizune em dist/public (ADR-017).
 //
 // Privado por padrão: só sai o que está na allowlist de
 // scripts/export-manifest.json (strings, globs simples com ** e renames
@@ -8,7 +8,7 @@
 // linha a linha); qualquer ocorrência FALHA o export (exit 1) e, no modo
 // --write, apaga dist/public/.
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/export-public.mjs            # dry-run: lista e varre, sem escrever
 //   bun scripts/export-public.mjs --write    # apaga e regrava dist/public/
@@ -23,13 +23,13 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1);
   return path.resolve(p, "..");
 }
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const ESCREVER = process.argv.includes("--write");
 const rel = (abs) => path.relative(RAIZ, abs) || ".";
 const relPosix = (abs) => rel(abs).split(path.sep).join("/");
@@ -173,7 +173,7 @@ const destRoot = path.join(RAIZ, "dist", "public");
 
 // --- cópia (somente --write) -------------------------------------------------
 
-// Frontmatter é o contrato interno do Brain (ADR-018) e vale para todo documento
+// Frontmatter é o contrato interno do Shizune (ADR-018) e vale para todo documento
 // da instância. Mas o GitHub renderiza frontmatter YAML de arquivo .md como uma
 // TABELA no topo da página — e num README isso põe uma tabela de metadados acima
 // do título, que é a primeira coisa que o visitante vê. Nos arquivos de vitrine

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// validate-structure.mjs — Valida a estrutura da árvore do Brain v2.
+// validate-structure.mjs — Valida a estrutura da árvore do Shizune v2.
 //
 // Verifica:
 //   (a) raiz contém apenas o conjunto permitido de arquivos e pastas (ADR-016);
@@ -9,7 +9,7 @@
 //       não vazia;
 //   (e) varredura de segredos em todos os arquivos de texto (erro fatal).
 //
-// Uso (funciona a partir de qualquer diretório; a raiz do Brain é resolvida
+// Uso (funciona a partir de qualquer diretório; a raiz do Shizune é resolvida
 // como a pasta pai de scripts/):
 //   bun scripts/validate-structure.mjs            # modo padrão
 //   bun scripts/validate-structure.mjs --strict   # modo estrito
@@ -34,13 +34,13 @@ import process from "node:process";
 
 // --- localização da raiz -----------------------------------------------------
 
-function raizDoBrain() {
+function raizDoShizune() {
   let p = decodeURIComponent(new URL(".", import.meta.url).pathname);
   if (/^\/[A-Za-z]:/.test(p)) p = p.slice(1); // Windows: "/D:/..." -> "D:/..."
   return path.resolve(p, "..");
 }
 
-const RAIZ = raizDoBrain();
+const RAIZ = raizDoShizune();
 const ESTRITO = process.argv.includes("--strict");
 
 const erros = [];
@@ -90,13 +90,15 @@ const PERMITIDOS_RAIZ = new Set([
   // pastas canônicas
   "skills", "projects", "examples", "agents", "templates", "governance",
   "docs", "metrics", "references", "logs", "scripts", "archive", "dist",
+  // conteúdo pronto para publicar (ADR-043) — privada, fora da allowlist do export
+  "content",
   // legado tolerado até a Onda 3
   ...PASTAS_LEGADAS, ...ARQUIVOS_LEGADOS_RAIZ,
 ]);
 
 const PASTAS_NOVAS = [
   "skills", "projects", "examples", "agents", "templates", "governance",
-  "docs", "metrics", "references",
+  "docs", "metrics", "references", "content",
 ];
 
 const CAMPOS_V2 = ["id", "tipo", "projeto", "status", "data", "autor"];
@@ -167,7 +169,7 @@ function parseFrontmatter(texto, caminho) {
 function verificarRaiz() {
   for (const ent of fs.readdirSync(RAIZ, { withFileTypes: true })) {
     if (!PERMITIDOS_RAIZ.has(ent.name)) {
-      erro(`${ent.name} — item não permitido na raiz do Brain (ADR-016): mova para uma pasta canônica ou para archive/`);
+      erro(`${ent.name} — item não permitido na raiz do Shizune (ADR-016): mova para uma pasta canônica ou para archive/`);
     }
   }
 }
@@ -298,7 +300,7 @@ function coletarMd() {
         if (dir === RAIZ && !ESTRITO && ARQUIVOS_LEGADOS_RAIZ.has(ent.name)) continue;
         // governance/public-package/ e area de staging de artefatos do GitHub
         // (SECURITY, CODE_OF_CONDUCT, templates de issue). Eles nao sao
-        // documentos do Brain e nao carregam frontmatter v2 — mas continuam
+        // documentos do Shizune e nao carregam frontmatter v2 — mas continuam
         // dentro da varredura de segredos, que e o que importa ali.
         if (ehStagingPublico(abs)) continue;
         resultado.push(abs);
@@ -382,6 +384,75 @@ function verificarSkills() {
       if (descricao.trim() === "") {
         erro(`${caminho} — description vazia (obrigatória na spec Anthropic de skills)`);
       }
+    }
+  }
+}
+
+// --- (d2) numeração de ADR: um número, um ADR -------------------------------
+//
+// A regra do Shizune é "ADRs numerados e nunca renumerados", e ela só valia no
+// papel: em 2026-08-31 duas sessões paralelas criaram, no mesmo dia, um ADR-037
+// e um ADR-038 cada uma, e os cinco verificadores passaram verdes. Número
+// repetido não é detalhe de nome de arquivo — são duas decisões distintas com o
+// mesmo endereço, e toda citação a partir dali fica ambígua.
+//
+// Onde os ADRs vivem é decisão de instância: hoje em `00-governanca/`, depois
+// da Onda 3 em `governance/adr/`. A busca cobre os dois sem caminho fixo, pelo
+// mesmo motivo que tirou a árvore legada de dentro do código na v0.2.1.
+function pastasDeAdr() {
+  const candidatas = [
+    path.join(RAIZ, "governance", "adr"),
+    ...LEGADO.pastas.map((p) => path.join(RAIZ, p)),
+  ];
+  return candidatas.filter((d) => {
+    if (!fs.existsSync(d)) return false;
+    return fs.readdirSync(d).some((n) => /^adr-\d{3}-.+\.md$/.test(n));
+  });
+}
+
+function verificarNumeracaoAdr() {
+  const porNumero = new Map();
+  for (const dir of pastasDeAdr()) {
+    for (const nome of fs.readdirSync(dir)) {
+      const m = /^adr-(\d{3})-.+\.md$/.exec(nome);
+      if (!m) continue;
+      if (!porNumero.has(m[1])) porNumero.set(m[1], []);
+      porNumero.get(m[1]).push(rel(path.join(dir, nome)));
+    }
+  }
+  if (!porNumero.size) return;
+
+  for (const [num, caminhos] of porNumero) {
+    if (caminhos.length > 1) {
+      erro(`ADR-${num} — número usado por ${caminhos.length} arquivos (${caminhos.join(", ")}): ` +
+        `um número, um ADR. Renumere o que ainda não foi commitado e corrija as citações.`);
+    }
+  }
+
+  // O registro dos ADRs é a tabela de DECISOES.md. Linha repetida é o mesmo
+  // defeito visto do outro lado, e passa despercebida num diff de uma linha.
+  const arqRegistro = pastasDeAdr()
+    .map((d) => path.join(d, "DECISOES.md"))
+    .find((a) => fs.existsSync(a));
+  if (!arqRegistro) return;
+
+  const linhasPorNumero = new Map();
+  for (const linha of fs.readFileSync(arqRegistro, "utf8").split(/\r?\n/)) {
+    const m = /^\|\s*\*\*ADR-(\d{3})\*\*\s*\|/.exec(linha);
+    if (!m) continue;
+    linhasPorNumero.set(m[1], (linhasPorNumero.get(m[1]) || 0) + 1);
+  }
+  for (const [num, n] of linhasPorNumero) {
+    if (n > 1) {
+      erro(`${rel(arqRegistro)} — ADR-${num} aparece em ${n} linhas da tabela: um número, uma decisão`);
+    }
+  }
+  // Arquivo sem linha na tabela é ADR que existe e ninguém registrou. O inverso
+  // — linha sem arquivo — é legítimo e não se checa: os ADRs mais antigos são
+  // detalhados dentro da própria tabela e nunca tiveram arquivo avulso.
+  for (const [num, caminhos] of porNumero) {
+    if (!linhasPorNumero.has(num)) {
+      erro(`${caminhos[0]} — ADR-${num} não tem linha na tabela de ${rel(arqRegistro)}: ADR não registrado`);
     }
   }
 }
@@ -470,7 +541,7 @@ function varrerSegredos() {
             aviso(`${rel(abs)}:${i + 1} — possível segredo em material bruto não triado (${nomePadrao}); não versionado, mas triar antes de destilar`);
             continue;
           }
-          erro(`${rel(abs)}:${i + 1} — possível segredo detectado (${nomePadrao}); segredos jamais entram no Brain (ADR-007)`);
+          erro(`${rel(abs)}:${i + 1} — possível segredo detectado (${nomePadrao}); segredos jamais entram no Shizune (ADR-007)`);
         }
       });
     }
@@ -501,6 +572,7 @@ const mds = coletarMd();
 for (const abs of mds) validarFrontmatterDoArquivo(abs, projetosValidos, idsVistos);
 
 verificarSkills();
+verificarNumeracaoAdr();
 const { varridos: textoVarridos, excecoes } = varrerSegredos();
 
 const declaradas = [...excecoes].filter(([, d]) => d.usada);

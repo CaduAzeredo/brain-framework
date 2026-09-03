@@ -9,7 +9,7 @@ autor: brain-framework
 
 # Template — relatorio.md
 
-Registro datado e IMUTÁVEL de uma rodada de trabalho — auditoria, execução, verificação — para `logs/<ano>/<slug>/`. É o artefato que `logs/` mais produz e o que sustenta toda afirmação do Brain sobre o que foi feito. Copie o corpo abaixo, nomeie o arquivo como `<aaaa-mm-dd>-<hh-mm>-<slug>.md` e preencha durante a rodada, não depois.
+Registro datado e IMUTÁVEL de uma rodada de trabalho — auditoria, execução, verificação — para `logs/<ano>/<slug>/`. É o artefato que `logs/` mais produz e o que sustenta toda afirmação do Shizune sobre o que foi feito. Copie o corpo abaixo, nomeie o arquivo como `<aaaa-mm-dd>-<hh-mm>-<slug>.md` e preencha durante a rodada, não depois.
 Errou um fato? **Não edite.** Crie um relatório novo que preencha "Corrige diagnóstico anterior" apontando para este — é assim que um sistema imutável se corrige sem apagar história.
 Seção sem conteúdo escreve "Nenhum" ou "Não se aplica". Seção vazia é lacuna, não opção.
 

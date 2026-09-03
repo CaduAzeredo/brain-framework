@@ -52,7 +52,7 @@ Encerrar uma sessão ou rodada de forma auditável, produzindo um documento auto
 ## Saída
 
 - **Artefato:** PAR de documentos de handoff com o mesmo `handoff_id` (ADR-020): narrativa `.md` + estado machine-readable `.json`.
-- **Destino:** `projects/<slug>/handoffs/handoff-<data>-<titulo>.md` e `handoff-<data>-<titulo>.json` (a partir da raiz do Brain; `<data>` em `YYYY-MM-DD`).
+- **Destino:** `projects/<slug>/handoffs/handoff-<data>-<titulo>.md` e `handoff-<data>-<titulo>.json` (a partir da raiz do Shizune; `<data>` em `YYYY-MM-DD`).
 - **Templates:** [templates/handoff.md](../../../templates/handoff.md) e [templates/handoff.json](../../../templates/handoff.json).
 - Handoff superado por rodada posterior vai para `archive/` do projeto — nada é apagado (ADR-015).
 
