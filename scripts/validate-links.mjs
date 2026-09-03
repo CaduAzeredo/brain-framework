@@ -92,10 +92,11 @@ function verificarArquivo(abs) {
 
       // absolutos: aviso, sem verificação de existência
       if (/^file:\/\//i.test(alvo) || /^[A-Za-z]:[\\/]/.test(alvo)) {
+        // Um aviso só. A versão anterior acrescentava um segundo, sobre o casing
+        // de uma pasta específica da máquina em que o framework nasceu — regra de
+        // instância viajando dentro de ferramenta genérica. O link absoluto já é
+        // o defeito; em que caixa ele está não é problema de quem clonou.
         avisos.push(`${caminho}:${n} — link absoluto (prefira caminho relativo): ${alvo}`);
-        if (/[A-Za-z]:[\\/]dev([\\/]|$)/.test(alvo)) {
-          avisos.push(`${caminho}:${n} — casing incorreto: "dev" minúsculo após a letra da unidade (o padrão é "Dev", ex.: D:\\Dev)`);
-        }
         continue;
       }
 

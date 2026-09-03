@@ -6,6 +6,19 @@ Version history of the Brain Framework. Format: [Keep a Changelog](https://keepa
 
 Nothing yet.
 
+## [0.3.1] - 2026-09-03
+
+**Four findings from auditing this package with the checks we run on other people's repositories.** Same method, same rubric, applied to ourselves the day 0.3.0 shipped: five divergences, none high, none security, nothing leaked. Four are closed here. The fifth is a TLS certificate on the project's apex domain — not code, and still open; `https://www.shizune.dev` works while the bare apex does not.
+
+Every item below carries the command that reproduces it, because a fix you cannot re-check is a claim.
+
+### Fixed
+
+- **The language note promised a translation the next release did not deliver.** It was stamped "Language, v0.2" inside a 0.3.0 package and called the translation of `skills/` and `templates/` "the headline item of the next release". That release came and went. The note now carries the current version, points at the translation issue with **no date**, and says plainly that the earlier promise was not met. Publishing in Brazilian Portuguese is a declared decision; repeating a deadline we had already missed was not.
+- **The commit guide never mentioned the trailer that fails the build.** `CONTRIBUTING.md` defines the commit convention, and 0.3.0 made `Decision: DEC-001` a mechanism that fails CI — but a contributor reading the one document that governs commits had no way to learn it existed. Section 2 now states when the trailer is required, the four cases that fail, the case that needs no trailer, and the command to check before pushing.
+- **A fresh clone opened with a warning about being fresh.** `scripts/validate-structure.mjs` reported an empty project registry the same way it reports a broken one, so the first command the quickstart tells a new user to run greeted them with an alert about the correct state. The validator gained a third output channel — a note, which counts toward neither the summary nor the exit code — and now separates three cases: an intact seed (`projetos: []`) is a note naming the next step; a missing `projetos:` key is now an **error**, where it used to be a warning; a key present with no readable entry stays a warning and says to check indentation. A new install reports zero errors and zero warnings.
+- **A validator shipped one machine's folder convention as a general rule.** `scripts/validate-links.mjs` warned about the capitalisation of a specific directory name from the instance this framework was extracted from. The absolute-link warning one line above is the real defect; which folder it points at is not the reader's problem. The extra warning is gone.
+
 ## [0.3.0] - 2026-09-03
 
 **The project is now called Shizune.** Versions up to 0.2.1 above shipped as the Brain Framework, and those entries are left exactly as they were: they describe what the project was called on the day they were written, and rewriting changelog history is precisely the defect this framework helps you find in other repositories. The repository, the site and the package name change here; the entries above do not.

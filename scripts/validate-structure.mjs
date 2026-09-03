@@ -47,6 +47,12 @@ const erros = [];
 const avisos = [];
 const erro = (m) => erros.push(m);
 const aviso = (m) => avisos.push(m);
+// Terceiro canal, deliberado: estado correto que ainda pede uma ação do usuário.
+// Sem ele, uma instalação nova recebia [AVISO] por estar vazia — que é exatamente
+// o estado esperado — com a mesma voz de um arquivo corrompido. Nota não conta
+// para o resumo nem muda o código de saída.
+const notas = [];
+const nota = (m) => notas.push(m);
 const rel = (abs) => path.relative(RAIZ, abs) || ".";
 
 // --- conjuntos canônicos (ADR-016 / ADR-018) --------------------------------
@@ -196,7 +202,28 @@ function lerRegistro() {
     const mStatus = /^\s+status:\s*(.+)$/.exec(l);
     if (mStatus && atual) atual.status = limparValor(mStatus[1]);
   });
-  if (projetos.length === 0) aviso(`${caminho} — nenhum projeto encontrado no registro (linhas "- slug:")`);
+  if (projetos.length === 0) {
+    // Registro vazio tem duas causas muito diferentes, e tratá-las igual fazia
+    // toda instalação nova começar com um alerta. A semente do framework traz
+    // `projetos: []` escrito — lista vazia declarada, estado correto de quem
+    // acabou de clonar. Ausência da chave, ou chave com conteúdo que não produz
+    // nenhum `- slug:`, é outra coisa: o arquivo foi mexido e quebrou.
+    const temChaveVazia = linhas.some((l) => /^projetos:\s*\[\s*\]\s*$/.test(l));
+    const temChave = linhas.some((l) => /^projetos:\s*(#.*)?$/.test(l) || /^projetos:/.test(l));
+    if (temChaveVazia) {
+      nota(
+        `${caminho} — registro vazio, como a semente vem. Próximo passo: ` +
+          `crie o primeiro projeto com \`bun scripts/new-project.mjs <slug>\`.`,
+      );
+    } else if (!temChave) {
+      erro(`${caminho} — chave "projetos:" ausente; o registro não é mais um registro válido`);
+    } else {
+      aviso(
+        `${caminho} — a chave "projetos:" existe mas nenhuma entrada \`- slug:\` foi lida; ` +
+          `verifique a indentação`,
+      );
+    }
+  }
   return projetos;
 }
 
@@ -588,6 +615,10 @@ if (erros.length) {
 if (avisos.length) {
   console.log(`\nAVISOS (${avisos.length}):`);
   for (const a of avisos) console.log(`  [AVISO] ${a}`);
+}
+if (notas.length) {
+  console.log(`\nNOTAS (${notas.length}):`);
+  for (const n of notas) console.log(`  [NOTA] ${n}`);
 }
 
 console.log(`\nResumo: ${textoVarridos} arquivo(s) de texto varridos (segredos), ` +

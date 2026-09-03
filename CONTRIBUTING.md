@@ -18,6 +18,13 @@ Format: `type(scope): description`.
 
 - **Type and scope in English** (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`); the description follows the content language of the repository you are committing to — English in this public framework repository.
 - One commit per logical change; messages in the imperative.
+- **A commit that changes product behaviour carries a decision trailer**, on its own line, naming a row of `governance/registro-decisoes.md`:
+
+  ```
+  Decision: DEC-001
+  ```
+
+  The build fails when a commit cites a decision that is not in the record, one with no signer, one whose commit SHA does not resolve in the tree, or one still marked `rascunho, assinatura pendente` — nothing may lean on a decision nobody has signed. A commit that changes no product behaviour needs no trailer, and an unsigned draft sitting in the record without being cited is a legitimate state that only warns. Check yours before pushing with `bun scripts/validate-decisions.mjs`; the record and the optional key-signature layer are explained in `QUICKSTART.md`, section 6.
 
 Examples:
 
